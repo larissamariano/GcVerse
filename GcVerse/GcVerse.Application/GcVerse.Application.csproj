@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GcVerse.Infrastructure\GcVerse.Infrastructure.csproj" />
     <ProjectReference Include="..\GcVerse.Models\GcVerse.Models.csproj" />
   </ItemGroup>
 

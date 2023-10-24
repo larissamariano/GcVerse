@@ -6,33 +6,34 @@ using Microsoft.AspNetCore.Mvc;
 namespace GcVerse.Application.Controllers
 {
     /// <summary>
-    /// Conteúdo - Notícias 
+    /// Conteúdo - Quizz
     /// </summary>
     [ApiController]
-    [Route("content/news")]
-    public class NewsContentController : ControllerBase
+    [Route("content/quizz")]
+    public class QuizzContentController : ControllerBase
     {
-        private readonly ILogger<NewsContentController> _logger;
-        private readonly INewsContentService _newsContentService;
+        private readonly ILogger<QuizzContentController> _logger;
+        private readonly IQuizzContentService _quizzContentService;
 
-        public NewsContentController(ILogger<NewsContentController> logger, 
-                                     INewsContentService newsContentService)
+
+        public QuizzContentController(ILogger<QuizzContentController> logger,
+                                      IQuizzContentService quizzContentService)
         {
             _logger = logger;
-            _newsContentService = newsContentService;
+            _quizzContentService = quizzContentService;
         }
 
         /// <summary>
-        /// Cria um novo conteúdo do tipo notícia.
+        /// Cria um novo conteúdo do tipo quizz.
         /// </summary>
-        /// <param name="upsertNewsContentRequest"></param>
+        /// <param name="upsertQuizzContentRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateNewsContent([FromBody] UpsertNewsContentRequest upsertNewsContentRequest)
+        public async Task<IActionResult> CreateQuizzContent([FromBody] UpsertQuizzContentRequest upsertQuizzContentRequest)
         {
             try
             {
-                var result = await _newsContentService.CreateNewsContent(upsertNewsContentRequest);
+                var result = await _quizzContentService.CreateQuizzContent(upsertQuizzContentRequest);
 
                 if (result)
                     return Ok("Conteúdo criado com sucesso.");
@@ -41,7 +42,7 @@ namespace GcVerse.Application.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(NewsContentController.CreateNewsContent)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(QuizzContentController.CreateQuizzContent)} - Error: " + ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResultError = ex.Message });
             }
         }
@@ -50,22 +51,22 @@ namespace GcVerse.Application.Controllers
         /// Atualiza um conteúdo de acordo com o id informado.
         /// </summary>
         /// <param name="contentId"> Id do Conteúdo </param>
-        /// <param name="upsertNewsContentRequest"></param>
+        /// <param name="upsertQuizzContentRequest"></param>
         [HttpPut("{contentId}")]
-        public async Task<IActionResult> UpdateNewsContent([FromRoute] Guid contentId, [FromBody] UpsertNewsContentRequest upsertNewsContentRequest)
+        public async Task<IActionResult> UpdateQuizzContent([FromRoute] Guid contentId, [FromBody] UpsertQuizzContentRequest upsertQuizzContentRequest)
         {
             try
             {
-                var result = await _newsContentService.UpdateNewsContent(contentId, upsertNewsContentRequest);
+                var result = await _quizzContentService.UpdateQuizzContent(contentId, upsertQuizzContentRequest);
 
                 if (result)
                     return Ok("Conteúdo atualizado com sucesso.");
                 else
-                    return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Erro ao atualizar conteúdo."});
+                    return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Erro ao atualizar conteúdo." });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(NewsContentController.UpdateNewsContent)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(QuizzContentController.UpdateQuizzContent)} - Error: " + ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResultError = ex.Message });
             }
         }
@@ -76,15 +77,15 @@ namespace GcVerse.Application.Controllers
         /// <param name="contentId"> Id do Conteúdo</param>
         /// <returns></returns>
         [HttpGet("{contentId}")]
-        public async Task<NewsContent> GetNewsById([FromRoute] Guid contentId)
+        public async Task<QuizzContent> GetQuizzById([FromRoute] Guid contentId)
         {
             try
             {
-               return await _newsContentService.GetNewsContentById(contentId);
+                return await _quizzContentService.GetQuizzContentById(contentId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(NewsContentController.GetNewsById)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(QuizzContentController.GetQuizzById)} - Error: " + ex.Message);
                 return null;
             }
         }
@@ -93,17 +94,17 @@ namespace GcVerse.Application.Controllers
         /// Retorna uma lista de conteúdos de acordo com o id da subCategoria informada.
         /// </summary>
         /// <param name="subCategoryId">Id da SubCategoria</param>
-        /// <returns></returns>
+        /// <retuns></retuns>
         [HttpGet("{subCategoryId}")]
-        public async Task<List<NewsContent>> GetNewsBySubcategoryId([FromRoute] Guid subCategoryId)
+        public async Task<List<QuizzContent>> GetQuizzBySubcategoryId([FromRoute] Guid subCategoryId)
         {
             try
             {
-                return await _newsContentService.GetNewsContentsBySubCategoryId(subCategoryId);
+                return await _quizzContentService.GetQuizzContentsBySubCategoryId(subCategoryId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(NewsContentController.GetNewsBySubcategoryId)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(QuizzContentController.GetQuizzBySubcategoryId)} - Error: " + ex.Message);
                 return null;
             }
         }
@@ -114,11 +115,11 @@ namespace GcVerse.Application.Controllers
         /// <param name="contentId">Id do Conteúdo</param>
         /// <returns></returns>
         [HttpDelete("{contentId}")]
-        public async Task<IActionResult> DeleteNewsById([FromRoute] Guid contentId)
+        public async Task<IActionResult> DeleteQuizzById([FromRoute] Guid contentId)
         {
             try
             {
-                var result = await _newsContentService.DeleteNewsContentById(contentId);
+                var result = await _quizzContentService.DeleteQuizzContentById(contentId);
 
                 if (result)
                     return Ok("Conteúdo deletado com sucesso.");
@@ -127,7 +128,7 @@ namespace GcVerse.Application.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(NewsContentController.DeleteNewsById)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(QuizzContentController.DeleteQuizzById)} - Error: " + ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResultError = ex.Message });
             }
         }

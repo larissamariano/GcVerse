@@ -1,33 +1,44 @@
-﻿using GcVerse.Models.Request;
+﻿using GcVerse.Infrastructure.Services.Category;
+using GcVerse.Models.Category;
+using GcVerse.Models.Request;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace GcVerse.Application.Controllers
 {
+    /// <summary>
+    /// SubCategorias
+    /// </summary>
     [ApiController]
     [Route("subCategory")]
     public class SubCategoryController : ControllerBase
     {
         private readonly ILogger<SubCategoryController> _logger;
-        // private readonly IUserService _userService;
+        private readonly ISubCategoryService _subCategoryService;
 
-        public SubCategoryController(ILogger<SubCategoryController> logger)
-                                  // IUserService userService)
+        public SubCategoryController(ILogger<SubCategoryController> logger, 
+                                     ISubCategoryService subCategoryService)
+                                  
         {
             _logger = logger;
-            //_userService = userService;
+            _subCategoryService = subCategoryService;
         }
 
-
+        /// <summary>
+        /// Cria uma nova subCategoria.
+        /// </summary>
+        /// <param name="upsertCategoryRequest"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateSubCategory([FromBody] UpsertSubCategoryRequest upsertSubCategoryRequest)
         {
             try
             {
-                  //  if (result)
-                        return Ok("Success adding a new user");
-                 //   else
-                        return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Error adding a new user" });
+                var result = await _subCategoryService.CreateSubCategory(upsertSubCategoryRequest);
+
+                if (result)
+                    return Ok("SubCategoria criada com sucesso.");
+                else
+                    return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Erro ao criar uma nova subCategoria." });
             }
             catch (Exception ex)
             {
@@ -36,15 +47,23 @@ namespace GcVerse.Application.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubCategory([FromBody] UpsertSubCategoryRequest upsertSubCategoryRequest)
+        /// <summary>
+        /// Atualiza uma subCategoria de acordo com o id informado.
+        /// </summary>
+        /// <param name="subCategoryId"> Id da Categoria </param>
+        /// <param name="upsertSubCategoryRequest"></param>
+        /// <returns></returns>
+        [HttpPut("{subCategoryId}")]
+        public async Task<IActionResult> UpdateSubCategory([FromRoute] Guid subCategoryId, [FromBody] UpsertSubCategoryRequest upsertSubCategoryRequest)
         {
             try
             {
-                //  if (result)
-                return Ok("Success adding a new user");
-                //   else
-                return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Error adding a new user" });
+                var result = await _subCategoryService.UpdateSubCategory(subCategoryId, upsertSubCategoryRequest);
+
+                if (result)
+                    return Ok("SubCategoria atualizada com sucesso.");
+                else
+                    return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Erro ao atualizar subCategoria." });
             }
             catch (Exception ex)
             {
@@ -53,50 +72,59 @@ namespace GcVerse.Application.Controllers
             }
         }
 
-        [HttpGet("all/{categoryId}")]
-        public async Task<IActionResult> GetAllSubCategories([FromRoute] Guid categoryId)
+        /// <summary>
+        /// Retorna uma subCategoria de acordo com o id informado.
+        /// </summary>
+        /// <param name="subCategoryId"> Id da SubCategoria</param>
+        /// <returns></returns>
+        [HttpGet("{subCategoryId}")]
+        public async Task<SubCategory> GetSubCategoryById([FromRoute] Guid subCategoryId)
         {
             try
             {
-                //  if (result)
-                return Ok("Success adding a new user");
-                //   else
-                return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Error adding a new user" });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"{nameof(SubCategoryController.GetAllSubCategories)} - Error: " + ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new { ResultError = ex.Message });
-            }
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetSubCategoryById([FromRoute] Guid subCategoryId)
-        {
-            try
-            {
-                //  if (result)
-                return Ok("Success adding a new user");
-                //   else
-                return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Error adding a new user" });
+               return await _subCategoryService.GetSubCategoryById(subCategoryId);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"{nameof(SubCategoryController.GetSubCategoryById)} - Error: " + ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new { ResultError = ex.Message });
+                return null;
             }
         }
 
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSubCategoryById([FromRoute] Guid categoryId)
+        /// <summary>
+        /// Retorna uma lista com todas as subCategorias de acordo com o id da categoria informada.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{categoryId}/all")]
+        public async Task<List<SubCategory>> GetAllSubCategoriesByCategoryId([FromRoute] Guid categoryId)
         {
             try
             {
-                //  if (result)
-                return Ok("Success adding a new user");
-                //   else
-                return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Error adding a new user" });
+               return await _subCategoryService.GetSubCategoriesListByCategoryId(categoryId);   
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{nameof(SubCategoryController.GetAllSubCategoriesByCategoryId)} - Error: " + ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Deleta uma subCategoria de acordo com o id informado.
+        /// </summary>
+        /// <param name="subCategoryId">Id da SubCategoria</param>
+        /// <returns></returns>
+        [HttpDelete("{subCategoryId}")]
+        public async Task<IActionResult> DeleteSubCategoryById([FromRoute] Guid subCategoryId)
+        {
+            try
+            {
+                var result = await _subCategoryService.DeleteSubCategoryById(subCategoryId);
+
+                if (result)
+                    return Ok("SubCategoria deletada com sucesso.");
+                else
+                    return StatusCode(StatusCodes.Status400BadRequest, new { ResultError = "Erro ao deletar subCategoria." });
             }
             catch (Exception ex)
             {
