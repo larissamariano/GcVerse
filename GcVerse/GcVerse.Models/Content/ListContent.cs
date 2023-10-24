@@ -15,14 +15,14 @@ namespace GcVerse.Models.Content
                 
         }
 
-        public ListContent(CreateListCotentRequest createListCotentRequest)
+        public ListContent(UpsertListContentRequest upsertListCotentRequest)
         {
             this.Id = Guid.NewGuid();
-            this.Topics = createListCotentRequest.Topics;
-            this.Title = createListCotentRequest.Title;
-            this.Description = createListCotentRequest.Description;
-            this.Images = createListCotentRequest.Images;
-            this.SubCategoryId = createListCotentRequest.SubCategoryId;
+            this.Title = upsertListCotentRequest.Title;
+            this.Description = upsertListCotentRequest.Description;
+            this.Images = upsertListCotentRequest.Images;
+            this.SubCategoryId = upsertListCotentRequest.SubCategoryId;
+            this.Topics = upsertListCotentRequest.Topics;
         }
 
         public List<BaseInfo> Topics { get; set; }

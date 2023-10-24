@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace GcVerse.Models.Request
 {
-    public class CreateListCotentRequest : BaseInfo
+    public class UpsertSubCategoryRequest : BaseInfo
     {
-        public Guid SubCategoryId { get; set; }
-        public List<BaseInfo> Topics { get; set; }
+        public Guid CategoryId { get; set; }
+        public List<string> Related { get; set; }
     }
 }

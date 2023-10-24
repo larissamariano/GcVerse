@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GcVerse.Models.Content
+namespace GcVerse.Models.Request
 {
-    public class BaseContent : BaseInfo
+    public class UpsertListContentRequest : BaseInfo
     {
-        public Guid Id { get; set; }
-        public ContentType Type { get; set; }
         public Guid SubCategoryId { get; set; }
+        public List<BaseInfo> Topics { get; set; }
     }
 }

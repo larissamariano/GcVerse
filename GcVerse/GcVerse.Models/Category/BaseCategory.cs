@@ -15,7 +15,7 @@ namespace GcVerse.Models.Category
                 
         }
 
-        public BaseCategory(CreateCategoryRequest createCategoryRequest)
+        public BaseCategory(UpsertCategoryRequest createCategoryRequest)
         {
             this.Id = Guid.NewGuid();
             this.Description = createCategoryRequest.Description;
