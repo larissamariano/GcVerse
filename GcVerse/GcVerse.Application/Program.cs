@@ -1,8 +1,17 @@
+using GcVerse.Infrastructure.Services.Category;
+using GcVerse.Infrastructure.Services.Category.Implementation;
+using GcVerse.Infrastructure.Services.Content;
+using GcVerse.Infrastructure.Services.Content.Implementation;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
+builder.Services.AddScoped<INewsContentService, NewsContentService>();
+builder.Services.AddScoped<IListContentService, ListContentService>();
+builder.Services.AddScoped<IQuizzContentService, QuizzContentService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

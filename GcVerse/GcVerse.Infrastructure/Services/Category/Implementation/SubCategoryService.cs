@@ -1,10 +1,9 @@
 ﻿using GcVerse.Infrastructure.Repositories.Category;
-using GcVerse.Infrastructure.Services.Category;
 using GcVerse.Models.Request;
-using models = GcVerse.Models.Category;
+using GcVerse.Models.Category;
 using Microsoft.Extensions.Logging;
 
-namespace GcVerse.Infrastructure.Services.SubCategory.Implementation
+namespace GcVerse.Infrastructure.Services.Category.Implementation
 {
     public class SubCategoryService : ISubCategoryService
     {
@@ -22,7 +21,7 @@ namespace GcVerse.Infrastructure.Services.SubCategory.Implementation
         {
             try
             {
-                return await _subCategoryRepository.CreateSubCategory(new models.SubCategory(upsertSubCategoryRequest));
+                return await _subCategoryRepository.CreateSubCategory(new SubCategory(upsertSubCategoryRequest));
             }
             catch (Exception ex)
             {
@@ -44,7 +43,7 @@ namespace GcVerse.Infrastructure.Services.SubCategory.Implementation
             }
         }
 
-        public async Task<List<models.SubCategory>> GetSubCategoriesListByCategoryId(Guid categoryId)
+        public async Task<List<SubCategory>> GetSubCategoriesListByCategoryId(Guid categoryId)
         {
             try
             {
@@ -57,7 +56,7 @@ namespace GcVerse.Infrastructure.Services.SubCategory.Implementation
             }
         }
 
-        public async Task<models.SubCategory> GetSubCategoryById(Guid subCategoryId)
+        public async Task<SubCategory> GetSubCategoryById(Guid subCategoryId)
         {
             try
             {
@@ -74,7 +73,7 @@ namespace GcVerse.Infrastructure.Services.SubCategory.Implementation
         {
             try
             {
-                return await _subCategoryRepository.UpdateSubCategory(new models.SubCategory(upsertSubCategoryRequest));
+                return await _subCategoryRepository.UpdateSubCategory(new SubCategory(upsertSubCategoryRequest));
             }
             catch (Exception ex)
             {
