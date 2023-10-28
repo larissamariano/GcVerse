@@ -53,7 +53,7 @@ namespace GcVerse.Application.Controllers
         /// <param name="upsertCategoryRequest"></param>
         /// <returns></returns>
         [HttpPut("{categoryId}")]
-        public async Task<IActionResult> UpdateCategory([FromRoute] Guid categoryId, [FromBody] UpsertCategoryRequest upsertCategoryRequest)
+        public async Task<IActionResult> UpdateCategory([FromRoute] int categoryId, [FromBody] UpsertCategoryRequest upsertCategoryRequest)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace GcVerse.Application.Controllers
         /// <param name="categoryId"> Id da Categoria</param>
         /// <returns></returns>
         [HttpGet("{categoryId}")]
-        public async Task<BaseCategory> GetCategoryById([FromRoute] Guid categoryId)
+        public async Task<BaseCategory> GetCategoryById([FromRoute] int categoryId)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace GcVerse.Application.Controllers
         /// <param name="categoryId">Id da Categoria</param>
         /// <returns></returns>
         [HttpDelete("{categoryId}")]
-        public async Task<IActionResult> DeleteCategoryById([FromRoute] Guid categoryId)
+        public async Task<IActionResult> DeleteCategoryById([FromRoute] int categoryId)
         {
             try
             {

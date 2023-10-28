@@ -20,7 +20,7 @@ namespace GcVerse.Models.Content
             this.Id = Guid.NewGuid();
             this.Title = upsertListCotentRequest.Title;
             this.Description = upsertListCotentRequest.Description;
-            this.Images = upsertListCotentRequest.Images;
+            this.Image = upsertListCotentRequest.Image;
             this.SubCategoryId = upsertListCotentRequest.SubCategoryId;
             this.Topics = upsertListCotentRequest.Topics;
         }

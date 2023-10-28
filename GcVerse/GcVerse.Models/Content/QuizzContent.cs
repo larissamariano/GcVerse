@@ -19,7 +19,7 @@ namespace GcVerse.Models.Content
             this.Id = Guid.NewGuid();
             this.Title = upsertQuizzContentRequest.Title;
             this.Description = upsertQuizzContentRequest.Description;
-            this.Images = upsertQuizzContentRequest.Images;
+            this.Image = upsertQuizzContentRequest.Image;
             this.SubCategoryId = upsertQuizzContentRequest.SubCategoryId;
             this.Questions = upsertQuizzContentRequest.Questions;
             this.Results = upsertQuizzContentRequest.Results;

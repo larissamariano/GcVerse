@@ -30,7 +30,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
             }
         }
 
-        public async Task<bool> DeleteSubCategoryById(Guid subCategoryId)
+        public async Task<bool> DeleteSubCategoryById(int subCategoryId)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
             }
         }
 
-        public async Task<List<SubCategory>> GetSubCategoriesListByCategoryId(Guid categoryId)
+        public async Task<List<SubCategory>> GetSubCategoriesListByCategoryId(int categoryId)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
             }
         }
 
-        public async Task<SubCategory> GetSubCategoryById(Guid subCategoryId)
+        public async Task<SubCategory> GetSubCategoryById(int subCategoryId)
         {
             try
             {
@@ -69,11 +69,11 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
             }
         }
 
-        public async Task<bool> UpdateSubCategory(Guid SubCategoryId, UpsertSubCategoryRequest upsertSubCategoryRequest)
+        public async Task<bool> UpdateSubCategory(int subCategoryId, UpsertSubCategoryRequest upsertSubCategoryRequest)
         {
             try
             {
-                return await _subCategoryRepository.UpdateSubCategory(new SubCategory(upsertSubCategoryRequest));
+                return await _subCategoryRepository.UpdateSubCategory(subCategoryId, new SubCategory(upsertSubCategoryRequest));
             }
             catch (Exception ex)
             {

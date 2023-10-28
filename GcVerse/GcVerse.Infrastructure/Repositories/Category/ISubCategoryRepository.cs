@@ -5,9 +5,9 @@ namespace GcVerse.Infrastructure.Repositories.Category
     public interface ISubCategoryRepository
     {
         Task<bool> CreateSubCategory(SubCategory baseCategory);
-        Task<bool> UpdateSubCategory(SubCategory baseCategory);
-        Task<SubCategory> GetSubCategoryById(Guid subCategoryId);
-        Task<List<SubCategory>> GetSubCategoriesbyCategoryId(Guid categoryId);
-        Task<bool> DeleteSubCategoryById(Guid categoryId);
+        Task<bool> UpdateSubCategory(int subCategoryId, SubCategory baseCategory);
+        Task<SubCategory> GetSubCategoryById(int subCategoryId);
+        Task<List<SubCategory>> GetSubCategoriesbyCategoryId(int categoryId);
+        Task<bool> DeleteSubCategoryById(int categoryId);
     }
 }

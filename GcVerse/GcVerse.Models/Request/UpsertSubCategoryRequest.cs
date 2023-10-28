@@ -9,7 +9,7 @@ namespace GcVerse.Models.Request
 {
     public class UpsertSubCategoryRequest : BaseInfo
     {
-        public Guid CategoryId { get; set; }
-        public List<string> Related { get; set; }
+        public int CategoryId { get; set; }
+        public string Related { get; set; }
     }
 }

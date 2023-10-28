@@ -30,7 +30,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
             }
         }
 
-        public async Task<bool> DeleteCategoryById(Guid categoryId)
+        public async Task<bool> DeleteCategoryById(int categoryId)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
             }
         }
 
-        public async Task<BaseCategory> GetCategoryById(Guid categoryId)
+        public async Task<BaseCategory> GetCategoryById(int categoryId)
         {
             try
             {
@@ -69,11 +69,11 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
             }
         }
 
-        public async Task<bool> UpdateCategory(Guid categoryId, UpsertCategoryRequest upsertCategoryRequest)
+        public async Task<bool> UpdateCategory(int categoryId, UpsertCategoryRequest upsertCategoryRequest)
         {
             try
             {
-                return await _categoryRepository.UpdateCategory(new BaseCategory(upsertCategoryRequest));
+                return await _categoryRepository.UpdateCategory(categoryId, new BaseCategory(upsertCategoryRequest));
             }
             catch (Exception ex)
             {
