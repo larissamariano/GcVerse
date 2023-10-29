@@ -1,4 +1,5 @@
-﻿using GcVerse.Models.Shared;
+﻿using GcVerse.Models.Content;
+using GcVerse.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace GcVerse.Models.Request
 {
-    public class UpsertListContentRequest : BaseInfo
+    public class UpsertListContentRequest : BaseInfoRequest
     {
-        public Guid SubCategoryId { get; set; }
-        public List<BaseInfo> Topics { get; set; }
+        public int SubCategoryId { get; set; }
+        public List<ListTopic> Topics { get; set; }
     }
 }

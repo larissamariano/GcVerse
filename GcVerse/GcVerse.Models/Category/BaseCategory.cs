@@ -2,6 +2,7 @@
 using GcVerse.Models.Shared;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -16,14 +17,14 @@ namespace GcVerse.Models.Category
                 
         }
 
-        public BaseCategory(UpsertCategoryRequest createCategoryRequest)
+        public BaseCategory(UpsertCategoryRequest upsertCategoryRequest)
         {
-            this.Description = createCategoryRequest.Description;
-            this.Title = createCategoryRequest.Title;
-            this.Image = createCategoryRequest.Image;
+            this.Description = upsertCategoryRequest.Description;
+            this.Title = upsertCategoryRequest.Title;
+            this.Image = new BaseImage(upsertCategoryRequest.ImageId);
         }
 
-        [Column("category_id")]
+        [Description("category_id")]
         public int Id { get; set; }
     }
 }

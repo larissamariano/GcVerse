@@ -1,6 +1,8 @@
 ﻿using GcVerse.Models.Request;
+using GcVerse.Models.Shared;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -15,22 +17,22 @@ namespace GcVerse.Models.Category
 
         }
 
-        public SubCategory(UpsertSubCategoryRequest createSubCategoryRequest)
+        public SubCategory(UpsertSubCategoryRequest upsertSubCategoryRequest)
         {
-            this.CategoryId = createSubCategoryRequest.CategoryId;
-            this.Related = createSubCategoryRequest.Related;
-            this.Description = createSubCategoryRequest.Description;
-            this.Image = createSubCategoryRequest.Image;
-            this.Title = createSubCategoryRequest.Title;
+            this.CategoryId = upsertSubCategoryRequest.CategoryId;
+            this.Related = upsertSubCategoryRequest.Related;
+            this.Description = upsertSubCategoryRequest.Description;
+            this.Image = new BaseImage(upsertSubCategoryRequest.ImageId);
+            this.Title = upsertSubCategoryRequest.Title;
         }
 
-        [Column("sub_category_id")]
+        [Description("sub_category_id")]
         public int Id { get; set; }
 
-        [Column("category_id")]
+        [Description("category_id")]
         public int CategoryId { get; set; }
 
-        [Column("related_info")]
+        [Description("related_info")]
         public string Related { get; set; }
     }
 }

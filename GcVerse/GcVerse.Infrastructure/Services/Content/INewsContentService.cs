@@ -6,9 +6,9 @@ namespace GcVerse.Infrastructure.Services.Content
     public interface INewsContentService
     {
         Task<bool> CreateNewsContent(UpsertNewsContentRequest upsertNewsContentRequest);
-        Task<bool> UpdateNewsContent(Guid contentId, UpsertNewsContentRequest upsertNewsContentRequest);
-        Task<NewsContent> GetNewsContentById(Guid contentId);
-        Task<List<NewsContent>> GetNewsContentsBySubCategoryId(Guid subCategoryId);
-        Task<bool> DeleteNewsContentById(Guid contentId);
+        Task<bool> UpdateNewsContent(int contentId, UpsertNewsContentRequest upsertNewsContentRequest);
+        Task<NewsContent> GetNewsContentById(int contentId);
+        Task<List<NewsContent>> GetNewsContentsBySubCategoryId(int   subCategoryId);
+        Task<bool> DeleteNewsContentById(int contentId);
     }
 }

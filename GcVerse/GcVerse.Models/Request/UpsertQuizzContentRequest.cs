@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace GcVerse.Models.Request
 {
-    public class UpsertQuizzContentRequest : BaseInfo
+    public class UpsertQuizzContentRequest : BaseInfoRequest
     {
-        public Guid SubCategoryId { get; set; }
+        public int SubCategoryId { get; set; }
         public List<QuizzQuestion> Questions { get; set; }
         public List<QuizzResults> Results { get; set; }
     }

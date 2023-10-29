@@ -10,6 +10,15 @@ namespace GcVerse.Models.Shared
 {
     public class BaseImage
     {
+        public BaseImage()
+        {
+                
+        }
+        public BaseImage(int imageId)
+        {
+            Id = imageId;
+        }
+
         [Description("image_id")]
         public long Id { get; set; }
 

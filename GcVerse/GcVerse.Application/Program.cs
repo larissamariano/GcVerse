@@ -2,11 +2,14 @@ using Dapper;
 using GcVerse.Infrastructure.Mapping;
 using GcVerse.Infrastructure.Repositories.Category;
 using GcVerse.Infrastructure.Repositories.Category.Implementation;
+using GcVerse.Infrastructure.Repositories.Content;
+using GcVerse.Infrastructure.Repositories.Content.Implementation;
 using GcVerse.Infrastructure.Services.Category;
 using GcVerse.Infrastructure.Services.Category.Implementation;
 using GcVerse.Infrastructure.Services.Content;
 using GcVerse.Infrastructure.Services.Content.Implementation;
 using GcVerse.Models.Category;
+using GcVerse.Models.Content;
 using GcVerse.Models.Shared;
 using Serilog;
 using System.ComponentModel;
@@ -28,19 +31,44 @@ Log.Information("Starting up!");
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
+builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+
+builder.Services.AddScoped<IBaseContentRepository, BaseContentRepository>();
+
+builder.Services.AddScoped<IListContentService, ListContentService>();
+builder.Services.AddScoped<IListContentRepository, ListContentRepository>();
+
+builder.Services.AddScoped<INewsContentService, NewsContentService>();
+builder.Services.AddScoped<INewsContentRepository, NewsContentRepository>();
+
 var map = new CustomPropertyTypeMap(typeof(BaseCategory), (type, columnName)
    => type.GetProperties().FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
 Dapper.SqlMapper.SetTypeMap(typeof(BaseCategory), map);
 
-map = new CustomPropertyTypeMap(typeof(BaseImage), 
+map = new CustomPropertyTypeMap(typeof(SubCategory), (type, columnName)
+  => type.GetProperties().FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
+Dapper.SqlMapper.SetTypeMap(typeof(SubCategory), map);
+
+map = new CustomPropertyTypeMap(typeof(BaseImage),
 (type, columnName) => type.GetProperties().
                            FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
 Dapper.SqlMapper.SetTypeMap(typeof(BaseImage), map);
 
-//builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
-//builder.Services.AddScoped<INewsContentService, NewsContentService>();
-//builder.Services.AddScoped<IListContentService, ListContentService>();
-//builder.Services.AddScoped<IQuizzContentService, QuizzContentService>();
+map = new CustomPropertyTypeMap(typeof(BaseContent),
+(type, columnName) => type.GetProperties().
+                           FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
+Dapper.SqlMapper.SetTypeMap(typeof(BaseContent), map);
+
+map = new CustomPropertyTypeMap(typeof(ListTopic),
+(type, columnName) => type.GetProperties().
+                           FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
+Dapper.SqlMapper.SetTypeMap(typeof(ListTopic), map);
+
+map = new CustomPropertyTypeMap(typeof(NewsContent),
+(type, columnName) => type.GetProperties().
+                           FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
+Dapper.SqlMapper.SetTypeMap(typeof(NewsContent), map);
 
 
 builder.Services.AddControllers();

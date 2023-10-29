@@ -1,10 +1,5 @@
 ﻿using GcVerse.Models.Request;
 using GcVerse.Models.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GcVerse.Models.Content
 {
@@ -17,14 +12,27 @@ namespace GcVerse.Models.Content
 
         public ListContent(UpsertListContentRequest upsertListCotentRequest)
         {
-            this.Id = Guid.NewGuid();
             this.Title = upsertListCotentRequest.Title;
             this.Description = upsertListCotentRequest.Description;
-            this.Image = upsertListCotentRequest.Image;
+            this.Image = new BaseImage(upsertListCotentRequest.ImageId);
             this.SubCategoryId = upsertListCotentRequest.SubCategoryId;
             this.Topics = upsertListCotentRequest.Topics;
+            this.Type = ContentType.List;
+            this.TypeId = (int)ContentType.List;
         }
 
-        public List<BaseInfo> Topics { get; set; }
+        public ListContent(BaseContent baseContent, List<ListTopic> topics)
+        {
+            this.Id = baseContent.Id;
+            this.Title = baseContent.Title;
+            this.Description = baseContent.Description;
+            this.Image = baseContent.Image;
+            this.SubCategoryId = baseContent.SubCategoryId;
+            this.Type = baseContent.Type;
+            this.TypeId = baseContent.TypeId;
+            this.Topics = topics;
+        }
+
+        public List<ListTopic> Topics { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GcVerse.Models.Request;
+using GcVerse.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,9 @@ namespace GcVerse.Models.Content
 
         public QuizzContent(UpsertQuizzContentRequest upsertQuizzContentRequest)
         {
-            this.Id = Guid.NewGuid();
             this.Title = upsertQuizzContentRequest.Title;
             this.Description = upsertQuizzContentRequest.Description;
-            this.Image = upsertQuizzContentRequest.Image;
+            this.Image = new BaseImage(upsertQuizzContentRequest.ImageId);
             this.SubCategoryId = upsertQuizzContentRequest.SubCategoryId;
             this.Questions = upsertQuizzContentRequest.Questions;
             this.Results = upsertQuizzContentRequest.Results;

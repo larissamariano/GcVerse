@@ -11,9 +11,9 @@ namespace GcVerse.Infrastructure.Repositories.Content
     public interface IListContentRepository
     {
         Task<bool> CreateListContent(ListContent content);
-        Task<bool> UpdateListContent(ListContent content);
-        Task<ListContent> GetListContentById(Guid contentId);
-        Task<List<ListContent>> GetListContentsBySubCategoryId(Guid subCategoryId);
-        Task<bool> DeleteListContent(Guid contentId);
+        Task<bool> UpdateListContent(int contentId, ListContent content);
+        Task<bool> DeleteListContent(int contentId);
+        Task<List<ListTopic>> GetListTopics(int contentId);
+
     }
 }

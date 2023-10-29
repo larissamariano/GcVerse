@@ -55,7 +55,7 @@ namespace GcVerse.Application.Controllers
         /// <param name="upsertListContentRequest"></param>
         /// <returns></returns>
         [HttpPut("{contentId}")]
-        public async Task<IActionResult> UpdateListContent([FromRoute] Guid contentId, [FromBody] UpsertListContentRequest upsertListContentRequest)
+        public async Task<IActionResult> UpdateListContent([FromRoute] int contentId, [FromBody] UpsertListContentRequest upsertListContentRequest)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace GcVerse.Application.Controllers
         /// <param name="contentId"> Id do Conteúdo</param>
         /// <returns></returns>
         [HttpGet("{contentId}")]
-        public async Task<ListContent> GetListById([FromRoute] Guid contentId)
+        public async Task<ListContent> GetListById([FromRoute] int contentId)
         {
             try
             {
@@ -97,8 +97,8 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="subCategoryId">Id da SubCategoria</param>
         /// <returns></returns>
-        [HttpGet("{subCategoryId}")]
-        public async Task<List<ListContent>> GetListBySubcategoryId([FromRoute] Guid subCategoryId)
+        [HttpGet("subCategory/{subCategoryId}")]
+        public async Task<List<ListContent>> GetListBySubcategoryId([FromRoute] int subCategoryId)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace GcVerse.Application.Controllers
         /// <param name="contentId">Id do Conteúdo</param>
         /// <returns></returns>
         [HttpDelete("{contentId}")]
-        public async Task<IActionResult> DeleteListById([FromRoute] Guid contentId)
+        public async Task<IActionResult> DeleteListById([FromRoute] int contentId)
         {
             try
             {

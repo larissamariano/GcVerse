@@ -83,7 +83,7 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(CategoryRepository.UpdateCategory)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(CategoryRepository.GetCategoryById)} - Error: " + ex.Message);
                 return null;
             }
         }

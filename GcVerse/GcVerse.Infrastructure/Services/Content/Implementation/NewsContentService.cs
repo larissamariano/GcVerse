@@ -30,7 +30,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
             }
         }
 
-        public async Task<bool> DeleteNewsContentById(Guid newsContentId)
+        public async Task<bool> DeleteNewsContentById(int newsContentId)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
             }
         }
 
-        public async Task<List<NewsContent>> GetNewsContentsBySubCategoryId(Guid subCategoryId)
+        public async Task<List<NewsContent>> GetNewsContentsBySubCategoryId(int subCategoryId)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
             }
         }
 
-        public async Task<NewsContent> GetNewsContentById(Guid newsContentId)
+        public async Task<NewsContent> GetNewsContentById(int newsContentId)
         {
             try
             {
@@ -69,11 +69,11 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
             }
         }
 
-        public async Task<bool> UpdateNewsContent(Guid newsContentId, UpsertNewsContentRequest upsertNewsContentRequest)
+        public async Task<bool> UpdateNewsContent(int newsContentId, UpsertNewsContentRequest upsertNewsContentRequest)
         {
             try
             {
-                return await _NewsContentRepository.UpdateNewsContent(new NewsContent(upsertNewsContentRequest));
+                return await _NewsContentRepository.UpdateNewsContent(newsContentId, new NewsContent(upsertNewsContentRequest));
             }
             catch (Exception ex)
             {

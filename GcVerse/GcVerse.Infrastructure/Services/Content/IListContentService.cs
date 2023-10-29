@@ -6,9 +6,9 @@ namespace GcVerse.Infrastructure.Services.Content
     public interface IListContentService
     {
         Task<bool> CreateListContent(UpsertListContentRequest upsertListContentRequest);
-        Task<bool> UpdateListContent(Guid contentId, UpsertListContentRequest upsertListContentRequest);
-        Task<ListContent> GetListContentById(Guid contentId);
-        Task<List<ListContent>> GetListContentsBySubCategoryId(Guid subCategoryId);
-        Task<bool> DeleteListContentById(Guid contentId);
+        Task<bool> UpdateListContent(int contentId, UpsertListContentRequest upsertListContentRequest);
+        Task<ListContent> GetListContentById(int contentId);
+        Task<List<ListContent>> GetListContentsBySubCategoryId(int subCategoryId);
+        Task<bool> DeleteListContentById(int contentId);
     }
 }
