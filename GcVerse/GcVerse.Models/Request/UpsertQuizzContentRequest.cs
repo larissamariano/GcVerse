@@ -11,7 +11,7 @@ namespace GcVerse.Models.Request
     public class UpsertQuizzContentRequest : BaseInfoRequest
     {
         public int SubCategoryId { get; set; }
-        public List<QuizzQuestion> Questions { get; set; }
-        public List<QuizzResults> Results { get; set; }
+        public List<QuizzQuestionRequest> Questions { get; set; }
+        public List<QuizzResultRequest> Results { get; set; }
     }
 }

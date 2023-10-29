@@ -2,26 +2,27 @@
 using GcVerse.Models.Request;
 using Microsoft.Extensions.Logging;
 using GcVerse.Models.Content;
+using GcVerse.Infrastructure.Repositories;
 
 namespace GcVerse.Infrastructure.Services.Content.Implementation
 {
     public class NewsContentService : INewsContentService
     {
         private readonly ILogger<NewsContentService> _logger;
-        private readonly INewsContentRepository _NewsContentRepository;
+        private readonly IBaseRepository<NewsContent> _newsContentRepository;
 
         public NewsContentService(ILogger<NewsContentService> logger,
-                                  INewsContentRepository NewsContentRepository)
+                                  IBaseRepository<NewsContent> newsContentRepository)
         {
             _logger = logger;
-            _NewsContentRepository = NewsContentRepository;
+            _newsContentRepository = newsContentRepository;
         }
 
         public async Task<bool> CreateNewsContent(UpsertNewsContentRequest upsertNewsContentRequest)
         {
             try
             {
-                return await _NewsContentRepository.CreateNewsContent(new NewsContent(upsertNewsContentRequest));
+                return await _newsContentRepository.CreateEntity(new NewsContent(upsertNewsContentRequest)) != 0;
             }
             catch (Exception ex)
             {
@@ -34,7 +35,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
         {
             try
             {
-                return await _NewsContentRepository.DeleteNewsContent(newsContentId);
+                return await _newsContentRepository.DeleteEntity(newsContentId);
             }
             catch (Exception ex)
             {
@@ -47,7 +48,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
         {
             try
             {
-                return await _NewsContentRepository.GetNewsContentsBySubCategoryId(subCategoryId);
+                return await _newsContentRepository.GetEntities(subCategoryId);
             }
             catch (Exception ex)
             {
@@ -60,7 +61,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
         {
             try
             {
-                return await _NewsContentRepository.GetNewsContentById(newsContentId);
+                return await _newsContentRepository.GetEntityById(newsContentId);
             }
             catch (Exception ex)
             {
@@ -73,7 +74,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
         {
             try
             {
-                return await _NewsContentRepository.UpdateNewsContent(newsContentId, new NewsContent(upsertNewsContentRequest));
+                return await _newsContentRepository.UpdateEntity(newsContentId, new NewsContent(upsertNewsContentRequest));
             }
             catch (Exception ex)
             {

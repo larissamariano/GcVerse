@@ -1,23 +1,16 @@
-﻿using GcVerse.Infrastructure.Repositories.Category.Implementation;
-using GcVerse.Models.Category;
-using GcVerse.Models.Shared;
+﻿using GcVerse.Models.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GcVerse.Models.Content;
 using Dapper;
-using System.Reflection.Metadata;
-using System.Reflection;
+using GcVerse.Infrastructure.Services.Content;
+using GcVerse.Models.Category;
 
 namespace GcVerse.Infrastructure.Repositories.Content.Implementation
 {
-    public class ListContentRepository : IListContentRepository
+    public class ListContentRepository : IBaseRepository<ListContent>
     {
         private readonly ILogger<ListContentRepository> _logger;
         private readonly string _connectionString;
@@ -32,69 +25,66 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             _connectionString = configuration.GetConnectionString("SqlConnection");
         }
 
-        public async Task<bool> CreateListContent(ListContent content)
+        public async Task<int> CreateEntity(ListContent content)
         {
             try
             {
-                var contentId = await _baseContentRepository.CreateBaseContent(content);
+                var contentId = await _baseContentRepository.CreateEntity(content);
 
                 if (contentId == 0)
-                    return false;
+                    return 0;
 
                 content.Topics.ForEach(t => { t.BaseContentId = contentId; });
                 var success = await CreateListTopics(content.Topics);
 
                 if (!success)
-                    await _baseContentRepository.DeleteBaseContent(contentId);
+                    await _baseContentRepository.DeleteEntity(contentId);
 
-                return success;
+                return 1;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(ListContentRepository.CreateListContent)} - Error: " + ex.Message);
-                return false;
+                _logger.LogError(ex, $"{nameof(ListContentRepository.CreateEntity)} - Error: " + ex.Message);
+                return 0;
             }
         }
 
-        public async Task<bool> UpdateListContent(int contentId, ListContent content)
+        public async Task<bool> UpdateEntity(int contentId, ListContent content)
         {
             try
             {
-                await _baseContentRepository.UpdateBaseContent(contentId, content);
+                await _baseContentRepository.UpdateEntity(contentId, content);
+                content.Topics.ForEach(t => { t.BaseContentId = contentId; });
 
-                if (content.Topics.Any(t => t.Id != 0))
-                    await UpdateListTopics(content.Topics.Where(t => t.Id != 0).ToList());
+                await DeleteTopics(contentId);
 
-                if (content.Topics.Any(t => t.Id == 0))
-                    await CreateListTopics(content.Topics.Where(t => t.Id == 0).ToList());
+                if (!await CreateListTopics(content.Topics))
+                    return false;
 
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(ListContentRepository.UpdateListContent)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(ListContentRepository.UpdateEntity)} - Error: " + ex.Message);
                 return false;
             }
         }
 
-        public async Task<bool> DeleteListContent(int contentId)
+        public async Task<bool> DeleteEntity(int contentId)
         {
             try
             {
-                string processQuery = @$"DELETE FROM [dbo].[list_content_topic] 
-                                         WHERE base_content_id = {contentId}";
+                if (!await DeleteTopics(contentId))
+                    return false;
 
-                using IDbConnection dbConnection = new SqlConnection(_connectionString);
-                await dbConnection.ExecuteAsync(processQuery);
+                if (!await _baseContentRepository.DeleteEntity(contentId))
+                    return false;
 
-                if (await _baseContentRepository.DeleteBaseContent(contentId))
-                    return true;
-
-                return false;
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(ListContentRepository.UpdateListContent)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(ListContentRepository.DeleteEntity)} - Error: " + ex.Message);
                 return false;
             }
         }
@@ -117,33 +107,24 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             }
         }
 
-        private async Task<bool> UpdateListTopics(List<ListTopic> topics)
+        private async Task<bool> DeleteTopics(int contentId)
         {
             try
             {
-                topics.ForEach(async t =>
-                {
-                    string processQuery = @$"UPDATE [dbo].[list_content_topic] 
-                                         SET title = @Title,
-                                             description = @Description,
-                                             image_id = @ImageId,
-                                         WHERE topic_id = {t.Id}";
+                string processQuery = @$"DELETE FROM [dbo].[list_content_topic] 
+                                         WHERE base_content_id = {contentId}";
 
-                    using IDbConnection dbConnection = new SqlConnection(_connectionString);
-                    await dbConnection.ExecuteAsync(processQuery, t);
-                });
-
-                return true;
+                using IDbConnection dbConnection = new SqlConnection(_connectionString);
+                return await dbConnection.ExecuteAsync(processQuery) != 0;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(ListContentRepository.CreateListTopics)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(ListContentRepository.DeleteTopics)} - Error: " + ex.Message);
                 return false;
             }
         }
 
-
-        public async Task<List<ListTopic>> GetListTopics(int contentId)
+        private async Task<List<ListTopic>> GetListTopics(int contentId)
         {
             try
             {
@@ -166,6 +147,45 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"{nameof(ListContentRepository.GetListTopics)} - Error: " + ex.Message);
+                return null;
+            }
+        }
+
+        public async Task<ListContent> GetEntityById(int entityId)
+        {
+            try
+            {
+                var baseContent = await _baseContentRepository.GetEntityById(entityId);
+                var topics = await GetListTopics(entityId);
+
+                return new ListContent(baseContent, topics);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{nameof(ListContentRepository.GetEntityById)} - Error: " + ex.Message);
+                return null;
+            }
+        }
+
+        public async Task<List<ListContent>> GetEntities(int? queryId)
+        {
+            try
+            {
+                var contents = new List<ListContent>();
+                var baseContentList = await _baseContentRepository.GetBaseContentBySubCategoryId(queryId.Value, ContentType.List);
+
+                foreach (var baseContent in baseContentList)
+                {
+                    var topics = await GetListTopics(baseContent.Id);
+
+                    contents.Add(new ListContent(baseContent, topics));
+                }
+
+                return contents;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{nameof(ListContentRepository.GetEntities)} - Error: " + ex.Message);
                 return null;
             }
         }

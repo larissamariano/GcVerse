@@ -2,26 +2,31 @@
 using GcVerse.Models.Request;
 using Microsoft.Extensions.Logging;
 using GcVerse.Models.Content;
+using GcVerse.Infrastructure.Repositories.Content.Implementation;
+using GcVerse.Infrastructure.Repositories;
 
 namespace GcVerse.Infrastructure.Services.Content.Implementation
 {
     public class QuizzContentService : IQuizzContentService
     {
         private readonly ILogger<QuizzContentService> _logger;
-        private readonly IQuizzContentRepository _QuizzContentRepository;
+        private readonly IBaseRepository<QuizzContent> _quizzContentRepository;
+        private readonly IBaseContentRepository _baseContentRepository;
 
         public QuizzContentService(ILogger<QuizzContentService> logger,
-                                  IQuizzContentRepository QuizzContentRepository)
+                                   IBaseRepository<QuizzContent> quizzContentRepository,
+                                   IBaseContentRepository baseContentRepository)
         {
             _logger = logger;
-            _QuizzContentRepository = QuizzContentRepository;
+            _quizzContentRepository = quizzContentRepository;
+            _baseContentRepository = baseContentRepository;
         }
 
         public async Task<bool> CreateQuizzContent(UpsertQuizzContentRequest upsertQuizzContentRequest)
         {
             try
             {
-                return await _QuizzContentRepository.CreateQuizzContent(new QuizzContent(upsertQuizzContentRequest));
+                return await _quizzContentRepository.CreateEntity(new QuizzContent(upsertQuizzContentRequest)) != 0;
             }
             catch (Exception ex)
             {
@@ -30,11 +35,11 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
             }
         }
 
-        public async Task<bool> DeleteQuizzContentById(Guid quizzContentId)
+        public async Task<bool> DeleteQuizzContentById(int quizzContentId)
         {
             try
             {
-                return await _QuizzContentRepository.DeleteQuizzContent(quizzContentId);
+                return await _quizzContentRepository.DeleteEntity(quizzContentId);
             }
             catch (Exception ex)
             {
@@ -43,11 +48,11 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
             }
         }
 
-        public async Task<List<QuizzContent>> GetQuizzContentsBySubCategoryId(Guid subCategoryId)
+        public async Task<List<QuizzContent>> GetQuizzContentsBySubCategoryId(int subCategoryId)
         {
             try
             {
-                return await _QuizzContentRepository.GetQuizzContentsBySubCategoryId(subCategoryId);
+                return await _quizzContentRepository.GetEntities(subCategoryId);
             }
             catch (Exception ex)
             {
@@ -56,11 +61,11 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
             }
         }
 
-        public async Task<QuizzContent> GetQuizzContentById(Guid quizzContentId)
+        public async Task<QuizzContent> GetQuizzContentById(int quizzContentId)
         {
             try
             {
-                return await _QuizzContentRepository.GetQuizzContentById(quizzContentId);
+                return await _quizzContentRepository.GetEntityById(quizzContentId);
             }
             catch (Exception ex)
             {
@@ -69,11 +74,11 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
             }
         }
 
-        public async Task<bool> UpdateQuizzContent(Guid quizzContentId, UpsertQuizzContentRequest upsertQuizzContentRequest)
+        public async Task<bool> UpdateQuizzContent(int quizzContentId, UpsertQuizzContentRequest upsertQuizzContentRequest)
         {
             try
             {
-                return await _QuizzContentRepository.UpdateQuizzContent(new QuizzContent(upsertQuizzContentRequest));
+                return await _quizzContentRepository.UpdateEntity(quizzContentId, new QuizzContent(upsertQuizzContentRequest));
             }
             catch (Exception ex)
             {

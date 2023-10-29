@@ -1,23 +1,14 @@
-﻿using GcVerse.Infrastructure.Repositories.Category.Implementation;
-using GcVerse.Models.Category;
-using GcVerse.Models.Shared;
+﻿using GcVerse.Models.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GcVerse.Models.Content;
 using Dapper;
-using System.Reflection.Metadata;
-using System.Reflection;
 
 namespace GcVerse.Infrastructure.Repositories.Content.Implementation
 {
-    public class NewsContentRepository : INewsContentRepository
+    public class NewsContentRepository : IBaseRepository<NewsContent>
     {
         private readonly ILogger<NewsContentRepository> _logger;
         private readonly string _connectionString;
@@ -32,14 +23,14 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             _connectionString = configuration.GetConnectionString("SqlConnection");
         }
 
-        public async Task<bool> CreateNewsContent(NewsContent content)
+        public async Task<int> CreateEntity(NewsContent content)
         {
             try
             {
-                var contentId = await _baseContentRepository.CreateBaseContent(content);
+                var contentId = await _baseContentRepository.CreateEntity(content);
 
                 if (contentId == 0)
-                    return false;
+                    return 0;
 
                 string processQuery = @$"INSERT INTO [dbo].[news_content]
                                        (base_content_id, news_content_text) VALUES
@@ -49,22 +40,22 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
                 var success = await dbConnection.ExecuteAsync(processQuery) != 0;
 
                 if (!success)
-                    await _baseContentRepository.DeleteBaseContent(contentId);
+                    await _baseContentRepository.DeleteEntity(contentId);
 
-                return success;
+                return 1;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(NewsContentRepository.CreateNewsContent)} - Error: " + ex.Message);
-                return false;
+                _logger.LogError(ex, $"{nameof(NewsContentRepository.CreateEntity)} - Error: " + ex.Message);
+                return 0;
             }
         }
 
-        public async Task<bool> UpdateNewsContent(int contentId, NewsContent content)
+        public async Task<bool> UpdateEntity(int contentId, NewsContent content)
         {
             try
             {
-                await _baseContentRepository.UpdateBaseContent(contentId, content);
+                await _baseContentRepository.UpdateEntity(contentId, content);
 
                 string processQuery = @$"UPDATE [dbo].[news_content] 
                                          SET news_content_text = '{content.Text}'
@@ -75,12 +66,12 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(NewsContentRepository.UpdateNewsContent)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(NewsContentRepository.UpdateEntity)} - Error: " + ex.Message);
                 return false;
             }
         }
 
-        public async Task<bool> DeleteNewsContent(int contentId)
+        public async Task<bool> DeleteEntity(int contentId)
         {
             try
             {
@@ -90,19 +81,19 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
                 await dbConnection.ExecuteAsync(processQuery);
 
-                if (await _baseContentRepository.DeleteBaseContent(contentId))
+                if (await _baseContentRepository.DeleteEntity(contentId))
                     return true;
 
                 return false;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(ListContentRepository.UpdateListContent)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(NewsContentRepository.DeleteEntity)} - Error: " + ex.Message);
                 return false;
             }
         }
 
-        public async Task<NewsContent> GetNewsContentById(int contentId)
+        public async Task<NewsContent> GetEntityById(int contentId)
         {
             try
             {
@@ -136,12 +127,12 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(NewsContentRepository.GetNewsContentById)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(NewsContentRepository.GetEntityById)} - Error: " + ex.Message);
                 return null;
             }
         }
 
-        public async Task<List<NewsContent>> GetNewsContentsBySubCategoryId(int subCategoryId)
+        public async Task<List<NewsContent>> GetEntities(int? subCategoryId)
         {
             try
             {
@@ -176,7 +167,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(NewsContentRepository.GetNewsContentsBySubCategoryId)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(NewsContentRepository.GetEntities)} - Error: " + ex.Message);
                 return null;
             }
         }      

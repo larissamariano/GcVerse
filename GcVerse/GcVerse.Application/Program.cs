@@ -1,5 +1,5 @@
-using Dapper;
 using GcVerse.Infrastructure.Mapping;
+using GcVerse.Infrastructure.Repositories;
 using GcVerse.Infrastructure.Repositories.Category;
 using GcVerse.Infrastructure.Repositories.Category.Implementation;
 using GcVerse.Infrastructure.Repositories.Content;
@@ -10,9 +10,7 @@ using GcVerse.Infrastructure.Services.Content;
 using GcVerse.Infrastructure.Services.Content.Implementation;
 using GcVerse.Models.Category;
 using GcVerse.Models.Content;
-using GcVerse.Models.Shared;
 using Serilog;
-using System.ComponentModel;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,50 +27,26 @@ System.IO.Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirec
 Log.Information("Starting up!");
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IBaseRepository<BaseCategory>, CategoryRepository>();
 
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
-builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+builder.Services.AddScoped<IBaseRepository<SubCategory>, SubCategoryRepository>();
 
 builder.Services.AddScoped<IBaseContentRepository, BaseContentRepository>();
 
 builder.Services.AddScoped<IListContentService, ListContentService>();
-builder.Services.AddScoped<IListContentRepository, ListContentRepository>();
+builder.Services.AddScoped<IBaseRepository<ListContent>, ListContentRepository>();
 
 builder.Services.AddScoped<INewsContentService, NewsContentService>();
-builder.Services.AddScoped<INewsContentRepository, NewsContentRepository>();
+builder.Services.AddScoped<IBaseRepository<NewsContent>, NewsContentRepository>();
 
-var map = new CustomPropertyTypeMap(typeof(BaseCategory), (type, columnName)
-   => type.GetProperties().FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
-Dapper.SqlMapper.SetTypeMap(typeof(BaseCategory), map);
+builder.Services.AddScoped<IQuizzContentService, QuizzContentService>();
+builder.Services.AddScoped<IBaseRepository<QuizzContent>, QuizzContentRepository>();
 
-map = new CustomPropertyTypeMap(typeof(SubCategory), (type, columnName)
-  => type.GetProperties().FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
-Dapper.SqlMapper.SetTypeMap(typeof(SubCategory), map);
-
-map = new CustomPropertyTypeMap(typeof(BaseImage),
-(type, columnName) => type.GetProperties().
-                           FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
-Dapper.SqlMapper.SetTypeMap(typeof(BaseImage), map);
-
-map = new CustomPropertyTypeMap(typeof(BaseContent),
-(type, columnName) => type.GetProperties().
-                           FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
-Dapper.SqlMapper.SetTypeMap(typeof(BaseContent), map);
-
-map = new CustomPropertyTypeMap(typeof(ListTopic),
-(type, columnName) => type.GetProperties().
-                           FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
-Dapper.SqlMapper.SetTypeMap(typeof(ListTopic), map);
-
-map = new CustomPropertyTypeMap(typeof(NewsContent),
-(type, columnName) => type.GetProperties().
-                           FirstOrDefault(prop => MappingData.GetDescriptionFromAttribute(prop) == columnName.ToLower()));
-Dapper.SqlMapper.SetTypeMap(typeof(NewsContent), map);
-
+MappingData.Mapping();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -83,7 +57,6 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 namespace GcVerse.Infrastructure.Repositories.Category.Implementation
 {
-    public class SubCategoryRepository : ISubCategoryRepository
+    public class SubCategoryRepository : IBaseRepository<SubCategory>
     {
         private readonly ILogger<SubCategoryRepository> _logger;
         private readonly string _connectionString;
@@ -24,7 +24,7 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             _connectionString = configuration.GetConnectionString("SqlConnection");
         }
 
-        public async Task<bool> CreateSubCategory(SubCategory subCategory)
+        public async Task<int> CreateEntity(SubCategory subCategory)
         {
             try
             {
@@ -33,16 +33,16 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
                                        (@Title, @Description,{subCategory.Image.Id},@CategoryId,@Related)";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
-                return await dbConnection.ExecuteAsync(processQuery, subCategory) != 0;
+                return await dbConnection.ExecuteAsync(processQuery, subCategory);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(SubCategoryRepository.CreateSubCategory)} - Error: " + ex.Message);
-                return false;
+                _logger.LogError(ex, $"{nameof(SubCategoryRepository.CreateEntity)} - Error: " + ex.Message);
+                return 0;
             }
         }
 
-        public async Task<bool> UpdateSubCategory(int subCategoryId, SubCategory subCategory)
+        public async Task<bool> UpdateEntity(int subCategoryId, SubCategory subCategory)
         {
             try
             {
@@ -59,12 +59,12 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(SubCategoryRepository.UpdateSubCategory)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(SubCategoryRepository.UpdateEntity)} - Error: " + ex.Message);
                 return false;
             }
         }
 
-        public async Task<SubCategory> GetSubCategoryById(int subCategoryId)
+        public async Task<SubCategory> GetEntityById(int subCategoryId)
         {
             try
             {             
@@ -86,12 +86,12 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(SubCategoryRepository.GetSubCategoryById)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(SubCategoryRepository.GetEntityById)} - Error: " + ex.Message);
                 return null;
             }
         }
 
-        public async Task<List<SubCategory>> GetSubCategoriesbyCategoryId(int categoryId)
+        public async Task<List<SubCategory>> GetEntities(int? categoryId)
         {
             try
             {
@@ -103,34 +103,34 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
 
-                var result = dbConnection.Query<SubCategory, BaseImage, SubCategory>(query, (SubCategory, baseImage) =>
+                var result = await dbConnection.QueryAsync<SubCategory, BaseImage, SubCategory>(query, (SubCategory, baseImage) =>
                 {
                     SubCategory.Image = baseImage;
                     return SubCategory;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "image_id");
 
-                return result;
+                return result.ToList();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(SubCategoryRepository.GetSubCategoriesbyCategoryId)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(SubCategoryRepository.GetEntities)} - Error: " + ex.Message);
                 return null;
             }
         }
 
-        public async Task<bool> DeleteSubCategoryById(int subCategoryId)
+        public async Task<bool> DeleteEntity(int subCategoryId)
         {
             try
             {
                 string processQuery = @$"DELETE FROM [dbo].[sub_category] 
-                                         WHERE sub_Category_id = {subCategoryId}";
+                                         WHERE sub_category_id = {subCategoryId}";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
                 return await dbConnection.ExecuteAsync(processQuery) != 0;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(SubCategoryRepository.DeleteSubCategoryById)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(SubCategoryRepository.DeleteEntity)} - Error: " + ex.Message);
                 return false;
             }
         }

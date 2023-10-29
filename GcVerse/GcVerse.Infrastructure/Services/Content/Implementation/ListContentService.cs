@@ -2,17 +2,18 @@
 using GcVerse.Models.Request;
 using Microsoft.Extensions.Logging;
 using GcVerse.Models.Content;
+using GcVerse.Infrastructure.Repositories;
 
 namespace GcVerse.Infrastructure.Services.Content.Implementation
 {
     public class ListContentService : IListContentService
     {
         private readonly ILogger<ListContentService> _logger;
-        private readonly IListContentRepository _listContentRepository;
+        private readonly IBaseRepository<ListContent> _listContentRepository;
         private readonly IBaseContentRepository _baseContentRepository;
 
         public ListContentService(ILogger<ListContentService> logger,
-                                  IListContentRepository listContentRepository,
+                                  IBaseRepository<ListContent> listContentRepository,
                                   IBaseContentRepository baseContentRepository)
         {
             _logger = logger;
@@ -24,7 +25,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
         {
             try
             {
-                return await _listContentRepository.CreateListContent(new ListContent(upsertListContentRequest));
+                return await _listContentRepository.CreateEntity(new ListContent(upsertListContentRequest)) !=0;
             }
             catch (Exception ex)
             {
@@ -37,7 +38,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
         {
             try
             {
-                return await _listContentRepository.DeleteListContent(listContentId);
+                return await _listContentRepository.DeleteEntity(listContentId);
             }
             catch (Exception ex)
             {
@@ -50,17 +51,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
         {
             try
             {
-                var contents = new List<ListContent>();
-                var baseContentList = await _baseContentRepository.GetBaseContentBySubCategoryId(subCategoryId, ContentType.List);
-               
-                foreach (var baseContent in baseContentList)
-                {
-                    var topics = await _listContentRepository.GetListTopics(baseContent.Id);
-
-                    contents.Add(new ListContent(baseContent, topics));
-                }
-
-                return contents;
+                return await _listContentRepository.GetEntities(subCategoryId);
             }
             catch (Exception ex)
             {
@@ -73,10 +64,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
         {
             try
             {
-                var baseContent = await _baseContentRepository.GetBaseContentById(listContentId);
-                var topics = await _listContentRepository.GetListTopics(listContentId);
-
-                return new ListContent(baseContent, topics);
+                return await _listContentRepository.GetEntityById(listContentId);
             }
             catch (Exception ex)
             {
@@ -89,7 +77,7 @@ namespace GcVerse.Infrastructure.Services.Content.Implementation
         {
             try
             {
-                return await _listContentRepository.UpdateListContent(listContentId, new ListContent(upsertListContentRequest));
+                return await _listContentRepository.UpdateEntity(listContentId, new ListContent(upsertListContentRequest));
             }
             catch (Exception ex)
             {

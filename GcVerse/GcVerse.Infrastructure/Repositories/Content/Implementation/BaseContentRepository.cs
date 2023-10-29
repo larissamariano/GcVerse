@@ -4,8 +4,6 @@ using System.Data.SqlClient;
 using System.Data;
 using GcVerse.Models.Content;
 using Dapper;
-using GcVerse.Infrastructure.Repositories.Category.Implementation;
-using GcVerse.Models.Category;
 using GcVerse.Models.Shared;
 
 namespace GcVerse.Infrastructure.Repositories.Content.Implementation
@@ -22,7 +20,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             _connectionString = configuration.GetConnectionString("SqlConnection");
         }
 
-        public async Task<int> CreateBaseContent(BaseContent content)
+        public async Task<int> CreateEntity(BaseContent content)
         {
             try
             {
@@ -38,12 +36,12 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(BaseContentRepository.CreateBaseContent)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(BaseContentRepository.CreateEntity)} - Error: " + ex.Message);
                 return 0;
             }
         }
 
-        public async Task<bool> UpdateBaseContent(int contentId, BaseContent content)
+        public async Task<bool> UpdateEntity(int contentId, BaseContent content)
         {
             try
             {
@@ -59,12 +57,12 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(BaseContentRepository.UpdateBaseContent)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(BaseContentRepository.UpdateEntity)} - Error: " + ex.Message);
                 return false;
             }
         }
 
-        public async Task<bool> DeleteBaseContent(int contentId)
+        public async Task<bool> DeleteEntity(int contentId)
         {
             try
             {
@@ -76,12 +74,12 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(BaseContentRepository.DeleteBaseContent)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(BaseContentRepository.DeleteEntity)} - Error: " + ex.Message);
                 return false;
             }
         }
 
-        public async Task<BaseContent> GetBaseContentById(int contentId)
+        public async Task<BaseContent> GetEntityById(int contentId)
         {
             try
             {
@@ -104,7 +102,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(BaseContentRepository.GetBaseContentById)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(BaseContentRepository.GetEntityById)} - Error: " + ex.Message);
                 return null;
             }
         }
@@ -133,7 +131,35 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(BaseContentRepository.GetBaseContentById)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(BaseContentRepository.GetBaseContentBySubCategoryId)} - Error: " + ex.Message);
+                return null;
+            }
+        }
+
+        public async Task<List<BaseContent>> GetEntities(int? queryId)
+        {
+            try
+            {
+                string query = @$"SELECT 
+                                  *
+                                  FROM [dbo].[base_content] as cnt
+                                  INNER JOIN [dbo].[base_image] as img on img.image_id = cnt.image_id
+                                  WHERE sub_category_id = {queryId}";
+
+                using IDbConnection dbConnection = new SqlConnection(_connectionString);
+
+                var result = dbConnection.Query<BaseContent, BaseImage, BaseContent>(query, (content, baseImage) =>
+                {
+                    content.Image = baseImage;
+                    content.Type = (ContentType)content.TypeId;
+                    return content;
+                }, splitOn: "image_id").AsList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{nameof(BaseContentRepository.GetBaseContentBySubCategoryId)} - Error: " + ex.Message);
                 return null;
             }
         }

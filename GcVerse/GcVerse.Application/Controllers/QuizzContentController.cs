@@ -53,7 +53,7 @@ namespace GcVerse.Application.Controllers
         /// <param name="contentId"> Id do Conteúdo </param>
         /// <param name="upsertQuizzContentRequest"></param>
         [HttpPut("{contentId}")]
-        public async Task<IActionResult> UpdateQuizzContent([FromRoute] Guid contentId, [FromBody] UpsertQuizzContentRequest upsertQuizzContentRequest)
+        public async Task<IActionResult> UpdateQuizzContent([FromRoute] int contentId, [FromBody] UpsertQuizzContentRequest upsertQuizzContentRequest)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace GcVerse.Application.Controllers
         /// <param name="contentId"> Id do Conteúdo</param>
         /// <returns></returns>
         [HttpGet("{contentId}")]
-        public async Task<QuizzContent> GetQuizzById([FromRoute] Guid contentId)
+        public async Task<QuizzContent> GetQuizzById([FromRoute] int contentId)
         {
             try
             {
@@ -95,8 +95,8 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="subCategoryId">Id da SubCategoria</param>
         /// <retuns></retuns>
-        [HttpGet("{subCategoryId}")]
-        public async Task<List<QuizzContent>> GetQuizzBySubcategoryId([FromRoute] Guid subCategoryId)
+        [HttpGet("subCategory/{subCategoryId}")]
+        public async Task<List<QuizzContent>> GetQuizzBySubcategoryId([FromRoute] int subCategoryId)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace GcVerse.Application.Controllers
         /// <param name="contentId">Id do Conteúdo</param>
         /// <returns></returns>
         [HttpDelete("{contentId}")]
-        public async Task<IActionResult> DeleteQuizzById([FromRoute] Guid contentId)
+        public async Task<IActionResult> DeleteQuizzById([FromRoute] int contentId)
         {
             try
             {

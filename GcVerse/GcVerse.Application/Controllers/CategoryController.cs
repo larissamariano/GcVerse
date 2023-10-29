@@ -27,6 +27,9 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="upsertCategoryRequest"></param>
         /// <returns></returns>
+        /// <response code="200">Requisição realizada com Sucesso.</response>
+        /// <response code="400">Erro ao realizar requisição.</response>
+        /// <response code="500">Erro na aplicação.</response>
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody] UpsertCategoryRequest upsertCategoryRequest)
         {

@@ -1,29 +1,33 @@
-﻿using Dapper;
+﻿using GcVerse.Infrastructure.Repositories.Category.Implementation;
 using GcVerse.Models.Category;
 using GcVerse.Models.Shared;
+using GcVerse.Models.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel;
-using System.Data;
+using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Reflection;
-using System.Xml.Linq;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Dapper;
 
-namespace GcVerse.Infrastructure.Repositories.Category.Implementation
+namespace GcVerse.Infrastructure.Repositories.User.Implementation
 {
-    public class CategoryRepository : IBaseRepository<BaseCategory>
+    public class UserRepository : IBaseRepository<BaseUser>
     {
-        private readonly ILogger<CategoryRepository> _logger;
+        private readonly ILogger<UserRepository> _logger;
         private readonly string _connectionString;
 
-        public CategoryRepository(ILogger<CategoryRepository> logger,
-                                  IConfiguration configuration)
+        public UserRepository(ILogger<UserRepository> logger,
+                              IConfiguration configuration)
         {
             _logger = logger;
             _connectionString = configuration.GetConnectionString("SqlConnection");
         }
 
-        public async Task<int> CreateEntity(BaseCategory baseCategory)
+        public async Task<int> CreateEntity(BaseUser baseUser)
         {
             try
             {
@@ -36,12 +40,12 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(CategoryRepository.CreateEntity)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(UserRepository.CreateEntity)} - Error: " + ex.Message);
                 return 0;
             }
         }
 
-        public async Task<bool> UpdateEntity(int categoryId, BaseCategory baseCategory)
+        public async Task<bool> UpdateEntity(int baseUserId, BaseUser baseUser)
         {
             try
             {
@@ -49,22 +53,22 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
                                          SET title = @Title,
                                              description = @Description,
                                              image_id = {baseCategory.Image.Id}
-                                         WHERE category_id = {categoryId}";
+                                         WHERE category_id = {baseUserId}";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
                 return await dbConnection.ExecuteAsync(processQuery, baseCategory) != 0;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(CategoryRepository.UpdateEntity)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(UserRepository.UpdateEntity)} - Error: " + ex.Message);
                 return false;
             }
         }
 
-        public async Task<BaseCategory> GetEntityById(int categoryId)
+        public async Task<BaseUser> GetEntityById(int categoryId)
         {
             try
-            {             
+            {
                 string query = @$"SELECT 
                                   *
                                   FROM [dbo].[category] as cat
@@ -83,12 +87,12 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(CategoryRepository.GetEntityById)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(UserRepository.GetEntityById)} - Error: " + ex.Message);
                 return null;
             }
         }
 
-        public async Task<List<BaseCategory>> GetEntities(int? queryId)
+        public async Task<List<BaseUser>> GetEntities(int? queryId)
         {
             try
             {
@@ -109,24 +113,24 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(CategoryRepository.GetEntities)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(UserRepository.GetEntities)} - Error: " + ex.Message);
                 return null;
             }
         }
 
-        public async Task<bool> DeleteEntity(int categoryId)
+        public async Task<bool> DeleteEntity(int userId)
         {
             try
             {
                 string processQuery = @$"DELETE FROM [dbo].[category] 
-                                         WHERE category_id = {categoryId}";
+                                         WHERE category_id = {userId}";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
                 return await dbConnection.ExecuteAsync(processQuery) != 0;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{nameof(CategoryRepository.DeleteEntity)} - Error: " + ex.Message);
+                _logger.LogError(ex, $"{nameof(UserRepository.DeleteEntity)} - Error: " + ex.Message);
                 return false;
             }
         }

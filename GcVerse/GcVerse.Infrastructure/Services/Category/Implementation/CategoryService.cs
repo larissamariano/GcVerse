@@ -1,4 +1,5 @@
-﻿using GcVerse.Infrastructure.Repositories.Category;
+﻿using GcVerse.Infrastructure.Repositories;
+using GcVerse.Infrastructure.Repositories.Category;
 using GcVerse.Models.Category;
 using GcVerse.Models.Request;
 using Microsoft.Extensions.Logging;
@@ -8,10 +9,10 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
     public class CategoryService : ICategoryService
     {
         private readonly ILogger<CategoryService> _logger;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IBaseRepository<BaseCategory> _categoryRepository;
 
         public CategoryService(ILogger<CategoryService> logger,
-                               ICategoryRepository categoryRepository)
+                               IBaseRepository<BaseCategory> categoryRepository)
         {
             _logger = logger;
             _categoryRepository = categoryRepository;
@@ -21,7 +22,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
         {
             try
             {
-                return await _categoryRepository.CreateCategory(new BaseCategory(upsertCategoryRequest));
+                return await _categoryRepository.CreateEntity(new BaseCategory(upsertCategoryRequest)) != 0;
             }
             catch (Exception ex)
             {
@@ -34,7 +35,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
         {
             try
             {
-                return await _categoryRepository.DeleteCategoryById(categoryId);
+                return await _categoryRepository.DeleteEntity(categoryId);
             }
             catch (Exception ex)
             {
@@ -47,7 +48,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
         {
             try
             {
-                return await _categoryRepository.GetAllCategories();
+                return await _categoryRepository.GetEntities(null);
             }
             catch (Exception ex)
             {
@@ -60,7 +61,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
         {
             try
             {
-                return await _categoryRepository.GetCategoryById(categoryId);
+                return await _categoryRepository.GetEntityById(categoryId);
             }
             catch (Exception ex)
             {
@@ -73,7 +74,7 @@ namespace GcVerse.Infrastructure.Services.Category.Implementation
         {
             try
             {
-                return await _categoryRepository.UpdateCategory(categoryId, new BaseCategory(upsertCategoryRequest));
+                return await _categoryRepository.UpdateEntity(categoryId, new BaseCategory(upsertCategoryRequest));
             }
             catch (Exception ex)
             {

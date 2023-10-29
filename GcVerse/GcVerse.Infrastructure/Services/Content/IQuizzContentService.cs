@@ -6,9 +6,9 @@ namespace GcVerse.Infrastructure.Services.Content
     public interface IQuizzContentService
     {
         Task<bool> CreateQuizzContent(UpsertQuizzContentRequest upsertQuizzContentRequest);
-        Task<bool> UpdateQuizzContent(Guid contentId, UpsertQuizzContentRequest upsertQuizzContentRequest);
-        Task<QuizzContent> GetQuizzContentById(Guid contentId);
-        Task<List<QuizzContent>> GetQuizzContentsBySubCategoryId(Guid subCategoryId);
-        Task<bool> DeleteQuizzContentById(Guid contentId);
+        Task<bool> UpdateQuizzContent(int contentId, UpsertQuizzContentRequest upsertQuizzContentRequest);
+        Task<QuizzContent> GetQuizzContentById(int contentId);
+        Task<List<QuizzContent>> GetQuizzContentsBySubCategoryId(int subCategoryId);
+        Task<bool> DeleteQuizzContentById(int contentId);
     }
 }

@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace GcVerse.Infrastructure.Repositories.Content
 {
-    public interface IBaseContentRepository
+    public interface IBaseContentRepository : IBaseRepository<BaseContent>
     {
-        Task<int> CreateBaseContent(BaseContent content);
-        Task<BaseContent> GetBaseContentById(int contentId);
         Task<List<BaseContent>> GetBaseContentBySubCategoryId(int subCategoryId, ContentType contentType);
-        Task<bool> UpdateBaseContent(int contentId, BaseContent content);   
-        Task<bool> DeleteBaseContent(int contentId);
     }
 }
