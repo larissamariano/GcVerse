@@ -21,16 +21,16 @@ Para rodar esse projeto você precisa seguir os passos abaixo:
 
 * Run de ADM project
 
-### Banco de Dados
+## Banco de Dados
 
 Esse projeto está usando SQL Server.
 Se seu ambiente estiver OK, você precisa rodar esse script [link](./sqldump/dump.sql).
 
-### API
+## API
 
 Essa API foi desenvolvida em .NET 6 e apresenta uma simples arquitetura de camadas. Para rodar esse projeto use VS Code ou VS 2022. [link](./api)
 
-### Autenticação
+## Autenticação
 
 O projeto da api principal apresenta as rotas de autenticação. Nesse processo foi utilizado JWT. 
 
@@ -39,7 +39,7 @@ Email: lari_carolline96@hotmail.com
 Password: Amorinha@230796
 
 
-### Admin
+## Admin
 
 This is a core project, here you can manager your data like cut videos, audio, upload video from your desktop, create your campain...etc
 
