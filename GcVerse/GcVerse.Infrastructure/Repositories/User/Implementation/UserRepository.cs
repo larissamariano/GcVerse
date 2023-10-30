@@ -1,21 +1,13 @@
-﻿using GcVerse.Infrastructure.Repositories.Category.Implementation;
-using GcVerse.Models.Category;
-using GcVerse.Models.Shared;
-using GcVerse.Models.User;
+﻿using GcVerse.Models.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
 
 namespace GcVerse.Infrastructure.Repositories.User.Implementation
 {
-    public class UserRepository : IBaseRepository<BaseUser>
+    public class UserRepository : IUserRepository
     {
         private readonly ILogger<UserRepository> _logger;
         private readonly string _connectionString;
@@ -31,12 +23,12 @@ namespace GcVerse.Infrastructure.Repositories.User.Implementation
         {
             try
             {
-                string processQuery = @$"INSERT INTO [dbo].[category]
-                                       (title, description, image_id) VALUES
-                                       (@Title, @Description,{baseCategory.Image.Id})";
+                string processQuery = @$"INSERT INTO [dbo].[base_user]
+                                       (base_user_name, base_user_email, base_user_password, user_permission_id) VALUES
+                                       (@Name, @Email, @Password, @PermissionId)";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
-                return await dbConnection.ExecuteAsync(processQuery, baseCategory);
+                return await dbConnection.ExecuteAsync(processQuery, baseUser);
             }
             catch (Exception ex)
             {
@@ -49,14 +41,15 @@ namespace GcVerse.Infrastructure.Repositories.User.Implementation
         {
             try
             {
-                string processQuery = @$"UPDATE [dbo].[category] 
-                                         SET title = @Title,
-                                             description = @Description,
-                                             image_id = {baseCategory.Image.Id}
-                                         WHERE category_id = {baseUserId}";
+                string processQuery = @$"UPDATE [dbo].[base_user] 
+                                         SET base_user_name = @Name,
+                                             base_user_email = @Email,
+                                             base_user_password = @Password,
+                                             user_permission_id = @PermissionId
+                                         WHERE base_user_id = {baseUserId}";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
-                return await dbConnection.ExecuteAsync(processQuery, baseCategory) != 0;
+                return await dbConnection.ExecuteAsync(processQuery, baseUser) != 0;
             }
             catch (Exception ex)
             {
@@ -65,24 +58,44 @@ namespace GcVerse.Infrastructure.Repositories.User.Implementation
             }
         }
 
-        public async Task<BaseUser> GetEntityById(int categoryId)
+        public async Task<BaseUser> GetEntityById(int userId)
         {
             try
             {
-                string query = @$"SELECT 
-                                  *
-                                  FROM [dbo].[category] as cat
-                                  INNER JOIN [dbo].[base_image] as img on img.image_id = cat.image_id
-                                  WHERE category_id = {categoryId} ";
+                string query = @$" SELECT 
+                                  base_user_id Id,
+								  base_user_name Name,
+								  base_user_email Email,
+								  user_permission_id PermissionId
+                                  FROM [dbo].[base_user]
+                                  WHERE base_user_id = {userId}";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
+                var result = dbConnection.Query<BaseUser>(query).AsList();
+                return result.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{nameof(UserRepository.GetEntityById)} - Error: " + ex.Message);
+                return null;
+            }
+        }
 
-                var result = dbConnection.Query<BaseCategory, BaseImage, BaseCategory>(query, (category, baseImage) =>
-                {
-                    category.Image = baseImage;
-                    return category;
-                }, splitOn: "image_id").AsList();
+        public async Task<BaseUser> IsLoginValid(string email, string password)
+        {
+            try
+            {
+                string query = @$" SELECT 
+                                  base_user_id Id,
+								  base_user_name Name,
+								  base_user_email Email,
+								  user_permission_id PermissionId
+                                  FROM [dbo].[base_user]
+                                  WHERE base_user_email = '{email}' 
+                                  AND base_user_password = '{password}'";
 
+                using IDbConnection dbConnection = new SqlConnection(_connectionString);
+                var result = dbConnection.Query<BaseUser>(query).AsList();
                 return result.FirstOrDefault();
             }
             catch (Exception ex)
@@ -97,18 +110,15 @@ namespace GcVerse.Infrastructure.Repositories.User.Implementation
             try
             {
                 string query = @$"SELECT 
-                                  *
-                                  FROM [dbo].[category] as cat
-                                  INNER JOIN [dbo].[base_image] as img on img.image_id = cat.image_id";
+                                  base_user_id Id,
+								  base_user_name Name,
+								  base_user_email Email,
+								  user_permission_id PermissionId
+                                  FROM [dbo].[base_user]
+                                  WHERE user_permission_id = {queryId}";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
-
-                var result = dbConnection.Query<BaseCategory, BaseImage, BaseCategory>(query, (category, baseImage) =>
-                {
-                    category.Image = baseImage;
-                    return category;
-                }, splitOn: "image_id").AsList();
-
+                var result = dbConnection.Query<BaseUser>(query).AsList();
                 return result;
             }
             catch (Exception ex)
@@ -122,8 +132,8 @@ namespace GcVerse.Infrastructure.Repositories.User.Implementation
         {
             try
             {
-                string processQuery = @$"DELETE FROM [dbo].[category] 
-                                         WHERE category_id = {userId}";
+                string processQuery = @$"DELETE FROM [dbo].[base_user] 
+                                         WHERE base_user_id = {userId}";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
                 return await dbConnection.ExecuteAsync(processQuery) != 0;

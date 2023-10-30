@@ -23,14 +23,10 @@ namespace GcVerse.Models.Content
             this.ImageId = quizzResultRequest.ImageId;
         }
 
-        [Description("result_id")]
         public int ResultId { get; set; }
 
-        [Description("base_content_id")]
         public int QuizzId { get; set; }
 
-        [Description("image_id")]
         public int ImageId { get; set; }
-
     }
 }

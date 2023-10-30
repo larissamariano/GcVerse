@@ -26,13 +26,10 @@ namespace GcVerse.Models.Category
             this.Title = upsertSubCategoryRequest.Title;
         }
 
-        [Description("sub_category_id")]
         public int Id { get; set; }
 
-        [Description("category_id")]
         public int CategoryId { get; set; }
 
-        [Description("related_info")]
         public string Related { get; set; }
     }
 }

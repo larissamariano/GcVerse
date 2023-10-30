@@ -220,7 +220,16 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             try
             {
                 string query = @$"SELECT 
-                                  *
+                                      qzz.question_id as QuestionId,
+								      qzz.base_content_id as QuizzId,
+								      qzz.title as Title,
+								      qzz.description as Description,
+									  qzz.image_id as ImageId,
+									  img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[quizz_question] as qzz
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = qzz.image_id
                                   WHERE base_content_id = {contentId}";
@@ -231,7 +240,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
                 {
                     content.Image = baseImage;
                     return content;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result;
             }
@@ -247,7 +256,18 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             try
             {
                 string query = @$"SELECT 
-                                  *
+                                      qst.option_id as OptionId,
+								      qst.base_content_id as QuizzId,
+                                      qst.question_id as QuestionId,
+								      qst.result_id as ResultId,
+								      qst.title as Title,
+								      qst.description as Description,
+									  qst.image_id as ImageId,
+									  img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[question_option] as qst
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = qst.image_id
                                   WHERE base_content_id = {contentId}
@@ -259,7 +279,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
                 {
                     content.Image = baseImage;
                     return content;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result;
             }
@@ -275,7 +295,16 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             try
             {
                 string query = @$"SELECT 
-                                  *
+                                      rst.base_content_id as QuizzId,
+                                      rst.result_id as ResultId,
+								      rst.title as Title,
+								      rst.description as Description,
+                                      rst.image_id as ImageId,
+									  img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[quizz_result] as rst
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = rst.image_id
                                   WHERE base_content_id = {contentId}";
@@ -286,7 +315,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
                 {
                     content.Image = baseImage;
                     return content;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result;
             }

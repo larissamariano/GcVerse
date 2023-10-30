@@ -24,10 +24,8 @@ namespace GcVerse.Models.Content
             this.Options = quizzQuestionRequest.Options.Select(o => new QuestionOption(o)).ToList();
         }
 
-        [Description("question_id")]
         public int QuestionId { get; set; }
 
-        [Description("base_content_id")]
         public int QuizzId { get; set; }
         public List<QuestionOption> Options { get; set; }
     }

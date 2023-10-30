@@ -69,7 +69,16 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             try
             {             
                 string query = @$"SELECT 
-                                  *
+                                      sub.sub_category_id as Id,
+									  sub.category_id as CategoryId,
+									  sub.related_info as Related,
+								      sub.title as Title,
+								      sub.description as Description,
+								      img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[sub_category] as sub
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = sub.image_id
                                   WHERE sub_category_id = {subCategoryId} ";
@@ -80,7 +89,7 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
                 {
                     SubCategory.Image = baseImage;
                     return SubCategory;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result.FirstOrDefault();
             }
@@ -96,7 +105,16 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             try
             {
                 string query = @$"SELECT 
-                                  *
+                                      sub.sub_category_id as Id,
+									  sub.category_id as CategoryId,
+									  sub.related_info as Related,
+								      sub.title as Title,
+								      sub.description as Description,
+								      img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[sub_category] as sub
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = sub.image_id
                                   WHERE category_id = {categoryId}";
@@ -107,7 +125,7 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
                 {
                     SubCategory.Image = baseImage;
                     return SubCategory;
-                }, splitOn: "image_id");
+                }, splitOn: "FromUrl");
 
                 return result.ToList();
             }

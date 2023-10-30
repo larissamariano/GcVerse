@@ -2,6 +2,8 @@
 using GcVerse.Infrastructure.Services.Content;
 using GcVerse.Models.Content;
 using GcVerse.Models.Request;
+using GcVerse.Models.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GcVerse.Application.Controllers
@@ -10,6 +12,8 @@ namespace GcVerse.Application.Controllers
     /// Conteúdo - Listas
     /// </summary>
     [ApiController]
+    [Authorize]
+    [Authorize(Roles = Permission.Administrator)]
     [Route("content/list")]
     public class ListContentController : ControllerBase
     {
@@ -29,6 +33,11 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="upsertListContentRequest"></param>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
         [HttpPost]
         public async Task<IActionResult> CreateListContent([FromBody] UpsertListContentRequest upsertListContentRequest)
         {
@@ -54,6 +63,11 @@ namespace GcVerse.Application.Controllers
         /// <param name="contentId"> Id do Conteúdo </param>
         /// <param name="upsertListContentRequest"></param>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
         [HttpPut("{contentId}")]
         public async Task<IActionResult> UpdateListContent([FromRoute] int contentId, [FromBody] UpsertListContentRequest upsertListContentRequest)
         {
@@ -78,6 +92,12 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="contentId"> Id do Conteúdo</param>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
+        [Authorize(Roles = $"{Permission.Administrator},{Permission.Basic}")]
         [HttpGet("{contentId}")]
         public async Task<ListContent> GetListById([FromRoute] int contentId)
         {
@@ -97,6 +117,12 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="subCategoryId">Id da SubCategoria</param>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
+        [Authorize(Roles = $"{Permission.Administrator},{Permission.Basic}")]
         [HttpGet("subCategory/{subCategoryId}")]
         public async Task<List<ListContent>> GetListBySubcategoryId([FromRoute] int subCategoryId)
         {
@@ -116,6 +142,11 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="contentId">Id do Conteúdo</param>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
         [HttpDelete("{contentId}")]
         public async Task<IActionResult> DeleteListById([FromRoute] int contentId)
         {

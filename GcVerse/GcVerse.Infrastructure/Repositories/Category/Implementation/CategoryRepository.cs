@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using GcVerse.Infrastructure.Mapping;
 using GcVerse.Models.Category;
 using GcVerse.Models.Shared;
 using Microsoft.Extensions.Configuration;
@@ -66,7 +67,14 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
             try
             {             
                 string query = @$"SELECT 
-                                  *
+                                      cat.category_id as Id,
+								      cat.title as Title,
+								      cat.description as Description,
+								      img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[category] as cat
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = cat.image_id
                                   WHERE category_id = {categoryId} ";
@@ -77,7 +85,7 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
                 {
                     category.Image = baseImage;
                     return category;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result.FirstOrDefault();
             }
@@ -92,8 +100,16 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
         {
             try
             {
+                
                 string query = @$"SELECT 
-                                  *
+                                      cat.category_id as Id,
+								      cat.title as Title,
+								      cat.description as Description,
+								      img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[category] as cat
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = cat.image_id";
 
@@ -103,7 +119,7 @@ namespace GcVerse.Infrastructure.Repositories.Category.Implementation
                 {
                     category.Image = baseImage;
                     return category;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result;
             }

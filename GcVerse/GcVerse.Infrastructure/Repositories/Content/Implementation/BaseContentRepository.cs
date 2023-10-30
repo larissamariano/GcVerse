@@ -84,7 +84,16 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             try
             {
                 string query = @$"SELECT 
-                                  *
+                                      cnt.base_content_id as Id,
+									  cnt.sub_category_id as SubCategoryId,
+									  cnt.content_type_id as TypeId,
+								      cnt.title as Title,
+								      cnt.description as Description,
+								      img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[base_content] as cnt
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = cnt.image_id
                                   WHERE base_content_id = {contentId} ";
@@ -96,7 +105,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
                     content.Image = baseImage;
                     content.Type = (ContentType)content.TypeId;
                     return content;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result.FirstOrDefault();
             }
@@ -112,20 +121,29 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             try
             {
                 string query = @$"SELECT 
-                                  *
+                                      cnt.base_content_id as Id,
+									  cnt.sub_category_id as SubCategoryId,
+									  cnt.content_type_id as TypeId,
+								      cnt.title as Title,
+								      cnt.description as Description,
+								      img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[base_content] as cnt
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = cnt.image_id
                                   WHERE sub_category_id = {subCategoryId}
                                   AND content_type_id = {(int)contentType}";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
-
+              
                 var result = dbConnection.Query<BaseContent, BaseImage, BaseContent>(query, (content, baseImage) =>
                 {
                     content.Image = baseImage;
                     content.Type = (ContentType)content.TypeId;
                     return content;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result;
             }
@@ -141,19 +159,29 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             try
             {
                 string query = @$"SELECT 
-                                  *
+                                      cnt.base_content_id as Id,
+									  cnt.sub_category_id as SubCategoryId,
+									  cnt.content_type_id as TypeId,
+								      cnt.title as Title,
+								      cnt.description as Description,
+								      img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[base_content] as cnt
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = cnt.image_id
                                   WHERE sub_category_id = {queryId}";
 
                 using IDbConnection dbConnection = new SqlConnection(_connectionString);
 
+
                 var result = dbConnection.Query<BaseContent, BaseImage, BaseContent>(query, (content, baseImage) =>
                 {
                     content.Image = baseImage;
                     content.Type = (ContentType)content.TypeId;
                     return content;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result;
             }

@@ -1,6 +1,8 @@
 ﻿using GcVerse.Infrastructure.Services.Category;
 using GcVerse.Models.Category;
 using GcVerse.Models.Request;
+using GcVerse.Models.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GcVerse.Application.Controllers
@@ -9,6 +11,8 @@ namespace GcVerse.Application.Controllers
     /// SubCategorias
     /// </summary>
     [ApiController]
+    [Authorize]
+    [Authorize(Roles = Permission.Administrator)]
     [Route("subCategory")]
     public class SubCategoryController : ControllerBase
     {
@@ -28,6 +32,11 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="upsertCategoryRequest"></param>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
         [HttpPost]
         public async Task<IActionResult> CreateSubCategory([FromBody] UpsertSubCategoryRequest upsertSubCategoryRequest)
         {
@@ -53,6 +62,11 @@ namespace GcVerse.Application.Controllers
         /// <param name="subCategoryId"> Id da Categoria </param>
         /// <param name="upsertSubCategoryRequest"></param>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
         [HttpPut("{subCategoryId}")]
         public async Task<IActionResult> UpdateSubCategory([FromRoute] int subCategoryId, [FromBody] UpsertSubCategoryRequest upsertSubCategoryRequest)
         {
@@ -77,6 +91,12 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="subCategoryId"> Id da SubCategoria</param>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
+        [Authorize(Roles = $"{Permission.Administrator},{Permission.Basic}")]
         [HttpGet("{subCategoryId}")]
         public async Task<SubCategory> GetSubCategoryById([FromRoute] int subCategoryId)
         {
@@ -95,6 +115,12 @@ namespace GcVerse.Application.Controllers
         /// Retorna uma lista com todas as subCategorias de acordo com o id da categoria informada.
         /// </summary>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
+        [Authorize(Roles = $"{Permission.Administrator},{Permission.Basic}")]
         [HttpGet("{categoryId}/all")]
         public async Task<List<SubCategory>> GetAllSubCategoriesByCategoryId([FromRoute] int categoryId)
         {
@@ -114,6 +140,11 @@ namespace GcVerse.Application.Controllers
         /// </summary>
         /// <param name="subCategoryId">Id da SubCategoria</param>
         /// <returns></returns>
+        /// <response code="200">Requisição Realizada com Sucesso.</response>
+        /// <response code="401">Requisição Não Autorizada. Token Inválido!</response>
+        /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
+        /// <response code="400">Erro ao Realizar Requisição.</response>
+        /// <response code="500">Erro na Aplicação.</response>
         [HttpDelete("{subCategoryId}")]
         public async Task<IActionResult> DeleteSubCategoryById([FromRoute] int subCategoryId)
         {
@@ -132,6 +163,5 @@ namespace GcVerse.Application.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { ResultError = ex.Message });
             }
         }
-
     }
 }

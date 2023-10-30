@@ -98,17 +98,17 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             try
             {
                 string query = @$"SELECT 
-                                    cnt.base_content_id,
-                                    cnt.title,
-                                    cnt.description,
-                                    cnt.content_type_id,
-                                    cnt.sub_category_id,
-                                    news.news_content_text,
-                                    img.image_id,
-                                    img.image_description,
-                                    img.image_from_url,
-                                    img.image_related_id,
-                                    img.image_url
+                                     cnt.base_content_id as Id,
+									 cnt.sub_category_id as SubCategoryId,
+									 cnt.content_type_id as TypeId,
+								     cnt.title as Title,
+								     cnt.description as Description,
+                                     news.news_content_text as Text,
+                                     img.image_from_url as FromUrl,
+								     img.image_id as Id,
+								     img.image_description as Description,
+								     img.image_related_id as RelatedId,
+								     img.image_url as Url
                                   FROM [dbo].[base_content] as cnt
                                   INNER JOIN [dbo].[news_content] as news on news.base_content_id = cnt.base_content_id
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = cnt.image_id
@@ -121,7 +121,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
                     content.Image = baseImage;
                     content.Type = (ContentType)content.TypeId;
                     return content;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result.FirstOrDefault();
             }
@@ -137,17 +137,17 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             try
             {
                 string query = @$"SELECT 
-                                    cnt.base_content_id,
-                                    cnt.title,
-                                    cnt.description,
-                                    cnt.content_type_id,
-                                    cnt.sub_category_id,
-                                    news.news_content_text,
-                                    img.image_id,
-                                    img.image_description,
-                                    img.image_from_url,
-                                    img.image_related_id,
-                                    img.image_url
+                                     cnt.base_content_id as Id,
+									 cnt.sub_category_id as SubCategoryId,
+									 cnt.content_type_id as TypeId,
+								     cnt.title as Title,
+								     cnt.description as Description,
+                                     news.news_content_text as Text,
+                                     img.image_from_url as FromUrl,
+								     img.image_id as Id,
+								     img.image_description as Description,
+								     img.image_related_id as RelatedId,
+								     img.image_url as Url
                                   FROM [dbo].[base_content] as cnt
                                   INNER JOIN [dbo].[news_content] as news on news.base_content_id = cnt.base_content_id
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = cnt.image_id
@@ -161,7 +161,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
                     content.Image = baseImage;
                     content.Type = (ContentType)content.TypeId;
                     return content;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result;
             }

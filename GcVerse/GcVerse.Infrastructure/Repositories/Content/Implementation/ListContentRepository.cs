@@ -129,7 +129,16 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
             try
             {
                 string query = @$"SELECT 
-                                  *
+                                      tpc.topic_id as Id,
+								      tpc.base_content_id as BaseContentId,
+								      tpc.title as Title,
+								      tpc.description as Description,
+									  tpc.image_id as ImageId,
+								      img.image_from_url as FromUrl,
+								      img.image_id as Id,
+								      img.image_description as Description,
+								      img.image_related_id as RelatedId,
+								      img.image_url as Url
                                   FROM [dbo].[list_content_topic] as tpc
                                   INNER JOIN [dbo].[base_image] as img on img.image_id = tpc.image_id
                                   WHERE base_content_id = {contentId}";
@@ -140,7 +149,7 @@ namespace GcVerse.Infrastructure.Repositories.Content.Implementation
                 {
                     topic.Image = baseImage;
                     return topic;
-                }, splitOn: "image_id").AsList();
+                }, splitOn: "FromUrl").AsList();
 
                 return result;
             }

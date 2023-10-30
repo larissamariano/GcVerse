@@ -24,7 +24,6 @@ namespace GcVerse.Models.Category
             this.Image = new BaseImage(upsertCategoryRequest.ImageId);
         }
 
-        [Description("category_id")]
         public int Id { get; set; }
     }
 }

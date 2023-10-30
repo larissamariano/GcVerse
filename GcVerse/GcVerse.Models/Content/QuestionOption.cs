@@ -23,19 +23,14 @@ namespace GcVerse.Models.Content
             this.ImageId = questionOptionRequest.ImageId;
         }
 
-        [Description("option_id")]
         public int OptionId { get; set; }
 
-        [Description("question_id")]
         public int QuestionId { get; set; }
 
-        [Description("base_content_id")]
         public int QuizzId { get; set; }
         
-        [Description("result_id")]
         public int ResultId { get; set; }
 
-        [Description("image_id")]
         public int ImageId { get; set; }
     }
 }

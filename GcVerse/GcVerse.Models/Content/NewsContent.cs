@@ -27,7 +27,6 @@ namespace GcVerse.Models.Content
             this.TypeId = (int)ContentType.News;
         }
    
-        [Description("news_content_text")]
         public string Text { get; set; }
        
     }
