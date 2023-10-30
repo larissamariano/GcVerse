@@ -22,7 +22,7 @@ Para rodar esse projeto você precisa seguir os passos abaixo:
 
 * Run de ADM project
 
-* Depois do projeto funcionando, você pode utilizar a collection do postman com todas as requisições do sistema para realizar os testes na API, além da documentação do SWAGGER que também está em funcionamento.
+* Depois do projeto funcionando, você pode utilizar a collection do postman com todas as requisições do sistema para realizar os testes na API, além da documentação do SWAGGER que também está funcional.
 
 ## Banco de Dados
 
