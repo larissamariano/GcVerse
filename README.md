@@ -9,6 +9,7 @@ GcVerse é um projeto desenvolvido por mim como entrega final de um dos módulos
 ## Repositories
 * SQL [link](./sqldump)
 * API [link](./api)
+* Postman Collection [link](./api)
 * Admin [link](./admin)
 
 
@@ -20,6 +21,8 @@ Para rodar esse projeto você precisa seguir os passos abaixo:
 * Rode o projeto da API, as configurações do localhost estão disponíveis no [lauchSettings.json (Profile: GcVerse.Application))](GcVerse/GcVerse.Application/Properties/launchSettings.json)
 
 * Run de ADM project
+
+* Depois do projeto funcionando, você pode utilizar a collection do postman com todas as requisições do sistema para realizar os testes na API, além da documentação do SWAGGER que também está em funcionamento.
 
 ## Banco de Dados
 
