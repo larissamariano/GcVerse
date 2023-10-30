@@ -1,6 +1,6 @@
-# GcVerse (New Universe) project
+# GcVerse (New Universe) Project
 
-GcVerse é um projeto desenvolvido por mim como o projeto final de um dos módulos do curso de pós graduação. Esse projeto tem como objetivo se tornar um lugar seguro e divertido na internet onde os jovens possam encontrar notícias fresquinhas, quizzes divertidos, listas e recomendações de conteúdo dos mais variados assuntos. A ideia é a construção de uma nova rede social que concentre entretenimento, informação com foco na cultura geek e asiatica que está em alta atualmente, principalemente entre a geração mais nova.
+GcVerse é um projeto desenvolvido por mim como entrega final de um dos módulos do curso de pós graduação. Esse projeto tem como objetivo se tornar um lugar seguro e divertido na internet onde os jovens possam encontrar notícias fresquinhas, quizzes divertidos, listas e recomendações de conteúdo dos mais variados assuntos. A ideia é a construção de uma nova rede social que concentre entretenimento, informação com foco na cultura geek e asiatica que está em alta atualmente, principalemente entre a geração mais nova.
 
 ## Contribute
 
@@ -24,7 +24,7 @@ Para rodar esse projeto você precisa seguir os passos abaixo:
 ### Banco de Dados
 
 Esse projeto está usando SQL Server.
-Se seu ambiente estiver ok, você precisa rodar esse script [link](./sqldump/dump.sql).
+Se seu ambiente estiver OK, você precisa rodar esse script [link](./sqldump/dump.sql).
 
 ### API
 
