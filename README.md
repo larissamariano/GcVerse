@@ -2,7 +2,7 @@
 
 GcVerse é um projeto desenvolvido por mim como entrega final de um dos módulos do curso de pós graduação. Esse projeto tem como objetivo se tornar um lugar seguro e divertido na internet onde os jovens possam encontrar notícias fresquinhas, quizzes divertidos, listas e recomendações de conteúdo dos mais variados assuntos. A ideia é a construção de uma nova rede social que concentre entretenimento, informação com foco na cultura geek e asiatica que está em alta atualmente, principalemente entre a geração mais nova.
 
-## Contribute
+## Desenvolvido Por
 
 [Larissa Caroline de Andrade Mariano](https://github.com/larissamariano)
 
@@ -35,7 +35,7 @@ Essa API foi desenvolvida em .NET 6 e apresenta uma simples arquitetura de camad
 
 ## Autenticação
 
-O projeto da api principal apresenta as rotas de autenticação. Nesse processo foi utilizado JWT. 
+O projeto da API principal apresenta as rotas de autenticação. Nesse processo foi utilizado JWT. 
 
 Credentials:
 Email: lari_carolline96@hotmail.com
