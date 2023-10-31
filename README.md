@@ -1,7 +1,7 @@
 ![GcVerse-logo](./Imagens/gcverse-logo.png)
 # GcVerse (New Universe) Project
 
-GcVerse é um projeto desenvolvido por mim como entrega final de um dos módulos do curso de pós graduação. Esse projeto tem como objetivo se tornar um lugar seguro e divertido na internet onde os jovens possam encontrar notícias fresquinhas, quizzes divertidos, listas e recomendações de conteúdo dos mais variados assuntos. A ideia é a construção de uma nova rede social que concentre entretenimento, informação com foco na cultura geek e asiatica que está em alta atualmente, principalemente entre a geração mais nova.
+GcVerse é um projeto desenvolvido por mim como entrega final de um dos módulos do curso de pós graduação. Esse projeto tem como objetivo se tornar um lugar seguro e divertido na internet onde os jovens possam encontrar notícias fresquinhas, quizzes divertidos, listas e recomendações de conteúdo dos mais variados assuntos. A ideia é a construção de uma nova rede social que concentre entretenimento, informação com foco na cultura geek e asiática que está em alta atualmente, principalmente entre a geração mais nova.
 
 ## Desenvolvido Por
 
