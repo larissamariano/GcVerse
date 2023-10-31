@@ -1,4 +1,5 @@
 CREATE DATABASE GcVerse;
+USE GcVerse;
 
 CREATE TABLE base_image
 ( image_id int IDENTITY(1,1) PRIMARY KEY,
@@ -71,11 +72,16 @@ CREATE TABLE quizz_result
 CREATE TABLE question_option
 ( option_id int IDENTITY(1,1) PRIMARY KEY,
   question_id int FOREIGN KEY REFERENCES quizz_question(question_id),
-  title VARCHAR(,00),
+  title VARCHAR(300),
   description VARCHAR(max),
   image_id int FOREIGN KEY REFERENCES base_image(image_id),
   base_content_id int FOREIGN KEY REFERENCES base_content(base_content_id),
   result_id int FOREIGN KEY REFERENCES quizz_result(result_id),
+);
+
+CREATE TABLE user_permission
+( user_permission_id int IDENTITY(1,1) PRIMARY KEY,
+  user_permission_description VARCHAR(100)
 );
 
 CREATE TABLE base_user
@@ -83,12 +89,8 @@ CREATE TABLE base_user
   base_user_name VARCHAR(200),
   base_user_email VARCHAR(max),
   base_user_password VARCHAR(max),
+  user_permission_id int FOREIGN KEY REFERENCES user_permission(user_permission_id),
   
-);
-
-CREATE TABLE user_permission
-( user_permission_id int IDENTITY(1,1) PRIMARY KEY,
-  user_permission_description VARCHAR(100)
 );
 
 INSERT INTO [dbo].[content_type]
@@ -108,3 +110,112 @@ INSERT INTO [dbo].user_permission
 
 INSERT INTO [dbo].user_permission
 (user_permission_description) VALUES ('Basic');
+
+INSERT INTO [dbo].[base_image]
+           ([image_related_id]
+           ,[image_url]
+           ,[image_from_url]
+           ,[image_description])
+     VALUES
+           ('korea, dorama, asia, pretendente surpresa, cultura',
+           'https://www.dicasdemulher.com.br/wp-content/uploads/2020/01/dorama-00-788x480.png',
+           'https://www.dicasdemulher.com.br/wp-content/uploads/2020/01/dorama-00-788x480.png',
+           'Via dicasdemulher.com');
+
+INSERT INTO [dbo].[base_image]
+           ([image_related_id]
+           ,[image_url]
+           ,[image_from_url]
+           ,[image_description])
+     VALUES
+           ('korea, dorama, asia, cultura',
+           'https://www.jornalismo.ufv.br/cinecom/wp-content/uploads/2022/04/Revisao-verbal-Parte-II.png',
+           'https://www.jornalismo.ufv.br/cinecom/wp-content/uploads/2022/04/Revisao-verbal-Parte-II.png',
+           'Via jornalismo.ufv.br');
+
+INSERT INTO [dbo].[base_image]
+           ([image_related_id]
+           ,[image_url]
+           ,[image_from_url]
+           ,[image_description])
+     VALUES
+           ('anime, classico, japao, asia, cultura',
+           'https://lunetas.com.br/wp-content/uploads/2022/04/animes-e-criancas-portal-lunetas.jpg',
+           'https://lunetas.com.br/wp-content/uploads/2022/04/animes-e-criancas-portal-lunetas.jpg',
+           'Via lunetas.com');
+
+INSERT INTO [dbo].[base_image]
+           ([image_related_id]
+           ,[image_url]
+           ,[image_from_url]
+           ,[image_description])
+     VALUES
+           ('geek, super herois, marvel, dc, cultura',
+           'https://mutantexis.files.wordpress.com/2014/10/blog-abre1.jpg',
+           'https://mutantexis.files.wordpress.com/2014/10/blog-abre1.jpg',
+           'Via mutantexis.files.wordpress.com');
+
+INSERT INTO [dbo].[base_image]
+           ([image_related_id]
+           ,[image_url]
+           ,[image_from_url]
+           ,[image_description])
+     VALUES
+           ('cultura, asia, korea, kpop, musica',
+           'https://sampi.net.br/dir-arquivo-imagem/2021/07/Captura-de-tela-2021-07-03-234501.png',
+           'https://sampi.net.br/dir-arquivo-imagem/2021/07/Captura-de-tela-2021-07-03-234501.png',
+           'Via sampi.net.br');
+
+INSERT INTO [dbo].[base_image]
+           ([image_related_id]
+           ,[image_url]
+           ,[image_from_url]
+           ,[image_description])
+     VALUES
+           ('cultura, geek, games, video games',
+           'https://www.crieseusjogos.com.br/wp-content/uploads/2019/02/5-documentarios-sobre-jogos.jpg',
+           'https://www.crieseusjogos.com.br/wp-content/uploads/2019/02/5-documentarios-sobre-jogos.jpg',
+           'Via crieseusjogos.com.br');
+INSERT INTO [dbo].[base_image]
+           ([image_related_id]
+           ,[image_url]
+           ,[image_from_url]
+           ,[image_description])
+     VALUES
+           ('cultura, asia, korea, kpop, musica',
+           'https://sampi.net.br/dir-arquivo-imagem/2021/07/Captura-de-tela-2021-07-03-234501.png',
+           'https://sampi.net.br/dir-arquivo-imagem/2021/07/Captura-de-tela-2021-07-03-234501.png',
+           'Via sampi.net.br');
+
+INSERT INTO [dbo].[base_image]
+           ([image_related_id]
+           ,[image_url]
+           ,[image_from_url]
+           ,[image_description])
+     VALUES
+           ('cultura, geek, games, video games',
+           'https://www.crieseusjogos.com.br/wp-content/uploads/2019/02/5-documentarios-sobre-jogos.jpg',
+           'https://www.crieseusjogos.com.br/wp-content/uploads/2019/02/5-documentarios-sobre-jogos.jpg',
+           'Via crieseusjogos.com.br');
+
+INSERT INTO [dbo].[base_image]
+           ([image_related_id]
+           ,[image_url]
+           ,[image_from_url]
+           ,[image_description])
+     VALUES
+           ('anime, classico, japao, asia, cultura, naruto, ninja',
+           'https://img.quizur.com/f/img64013af264e308.14330658.png?lastEdited=1677802230',
+           'https://img.quizur.com/f/img64013af264e308.14330658.png?lastEdited=1677802230',
+           'Via img.quizur.com');
+
+INSERT INTO [dbo].[base_user]
+           ([base_user_name]
+           ,[base_user_email]
+           ,[base_user_password]
+           ,[user_permission_id])
+     VALUES
+           ('Larissa Mariano',
+           'lari_carolline96@hotmail.com',
+           'c16d8dac90447a770ca930f44ac519b8',
+           '1');
