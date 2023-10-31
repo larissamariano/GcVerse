@@ -1,3 +1,4 @@
+![GcVerse-logo](./Imagens/gcverse-logo.png)
 # GcVerse (New Universe) Project
 
 GcVerse é um projeto desenvolvido por mim como entrega final de um dos módulos do curso de pós graduação. Esse projeto tem como objetivo se tornar um lugar seguro e divertido na internet onde os jovens possam encontrar notícias fresquinhas, quizzes divertidos, listas e recomendações de conteúdo dos mais variados assuntos. A ideia é a construção de uma nova rede social que concentre entretenimento, informação com foco na cultura geek e asiatica que está em alta atualmente, principalemente entre a geração mais nova.
@@ -7,9 +8,9 @@ GcVerse é um projeto desenvolvido por mim como entrega final de um dos módulos
 [Larissa Caroline de Andrade Mariano](https://github.com/larissamariano)
 
 ## Repositories
-* SQL [link](./sqldump)
-* API [link](./api)
-* Postman Collection [link](./api)
+* SQL [link](./Sql/script-create-database-tables-gcverse.txt)
+* API [link](./GcVerse)
+* Postman Collection [link]()
 * Admin [link](./admin)
 
 
@@ -19,15 +20,12 @@ Para rodar esse projeto você precisa seguir os passos abaixo:
 
 * Rode o script dentro da pasta SQL para criar o banco de dados e inserir os dados necessários.
 * Rode o projeto da API, as configurações do localhost estão disponíveis no [lauchSettings.json (Profile: GcVerse.Application))](GcVerse/GcVerse.Application/Properties/launchSettings.json)
-
-* Run de ADM project
-
 * Depois do projeto funcionando, você pode utilizar a collection do postman com todas as requisições do sistema para realizar os testes na API, além da documentação do SWAGGER que também está funcional. Não se esqueça de realizar a autenticação!
 
 ## Banco de Dados
 
 Esse projeto está usando SQL Server.
-Se seu ambiente estiver OK, você precisa rodar esse script [link](./sqldump/dump.sql).
+Se seu ambiente estiver OK, você precisa rodar esse script [link](./Sql/script-create-database-tables-gcverse.txt).
 
 ## API
 
