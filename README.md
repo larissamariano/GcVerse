@@ -10,9 +10,7 @@ GcVerse é um projeto desenvolvido por mim como entrega final de um dos módulos
 ## Repositories
 * SQL [link](./Sql/script-create-database-tables-gcverse.txt)
 * API [link](./GcVerse)
-* Postman Collection [link]()
-* Admin [link](./admin)
-
+* Postman Collection [link](./PostmanCollection/GcVerse.postman_collection.json)
 
 ## Desenvolvimento 
 
@@ -39,26 +37,16 @@ Credentials:
 Email: lari_carolline96@hotmail.com
 Password: Amorinha@230796
 
+## Levantamento de Requisitos
 
-## Admin
+GCVerse apresenta os seguintes módulos, nesse projeto foram implementados os módulos de categorização, conteúdo, usuários e autenticação que estão representados no diagrama na cor verde.
 
-This is a core project, here you can manager your data like cut videos, audio, upload video from your desktop, create your campain...etc
+![main-diagrama](./Imagens/gcverse-modulos-completos-img.png)
 
-Login
+Abaixo você encontra algumas informações sobre o módulo de categorização:
 
-![Cut video](./images/login.png)
+![categorizacao](./Imagens/gcverse-modulo-categorizacao.png)
 
-Channels
-![List Channels](./images/channels.png)
+Abaixo você encontra algumas informações sobre o módulo de conteúdo:
 
-
-Edit Content
-In this page you can cut videos, download thumb from video and share your content
-![Cut video](./images/cut_video.png)
-
-
-Campain
-![Campain](./images/campain.png)
-
-Social Media
-![Manager Social Media](./images/socialMedia.png)
+![conteudo](./Imagens/gcverse-modulo-conteudo.png)
