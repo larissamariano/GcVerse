@@ -13,13 +13,15 @@ export class ContentComponent implements OnInit {
   data: any;
   id: number = 0;
 
+  // params => {
+  //   const id = params['id'];
+  //   this.id = id;
+  // }
+  
   async ngOnInit() {
-    this.route.params.subscribe(params => {
-      const id = params['id'];
-      this.id = id;
-    });
+    this.route.params.subscribe();
     try {
-      const response = await axiosInstance.get(`/article/${this.id}`);
+      const response = await axiosInstance.get(`/category/all`);
       this.data = response.data;
     } catch (error) {
       console.error('Erro ao obter dados da API:', error);

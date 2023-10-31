@@ -3,7 +3,7 @@
   <div class="col-12 col-md-6" *ngIf="data[0]">
     <app-big-card
     [id]="+data[0].id"
-    [imgSource]="data[0].article_cover"
+    [imgSource]="data[0].image.url"
     [title]="data[0].title"
     [description]="data[0].description"
     [publicationDate]="data[0].date"

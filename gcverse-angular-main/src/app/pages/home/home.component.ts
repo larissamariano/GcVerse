@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const response = await axiosInstance.get('/article');
+      const response = await axiosInstance.get('/category/all');
       this.data = response.data;
     } catch (error) {
       console.error('Erro ao obter dados da API:', error);

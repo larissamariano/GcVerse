@@ -110,6 +110,7 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
+builder.Services.AddCors();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -118,6 +119,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(o => o.AllowAnyOrigin());
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

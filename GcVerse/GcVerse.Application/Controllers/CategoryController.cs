@@ -11,8 +11,8 @@ namespace GcVerse.Application.Controllers
     /// Categorias
     /// </summary>
     [ApiController]
-    [Authorize]
-    [Authorize(Roles = Permission.Administrator)]
+    //[Authorize]
+    //[Authorize(Roles = Permission.Administrator)]
     [Route("category")]
     public class CategoryController : ControllerBase
     {
@@ -119,7 +119,7 @@ namespace GcVerse.Application.Controllers
         /// <response code="403">Requisição Proibida. Usuário sem permissão para executar essa ação!</response>
         /// <response code="400">Erro ao Realizar Requisição.</response>
         /// <response code="500">Erro na Aplicação.</response>
-        [Authorize(Roles = $"{Permission.Administrator},{Permission.Basic}")]
+        //[Authorize(Roles = $"{Permission.Administrator},{Permission.Basic}")]
         [HttpGet("all")]
         public async Task<List<BaseCategory>> GetAllCategories()
         {
