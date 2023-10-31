@@ -1,0 +1,110 @@
+CREATE DATABASE GcVerse;
+
+CREATE TABLE base_image
+( image_id int IDENTITY(1,1) PRIMARY KEY,
+  image_related_id VARCHAR(max),
+  image_url VARCHAR(300),
+  image_from_url VARCHAR (300),
+  image_description VARCHAR(500)
+);
+
+CREATE TABLE category
+( category_id int IDENTITY(1,1) PRIMARY KEY,
+  title VARCHAR(300),
+  description VARCHAR(max),
+  image_id int FOREIGN KEY REFERENCES base_image(image_id)
+);
+
+CREATE TABLE sub_category
+( sub_category_id int IDENTITY(1,1) PRIMARY KEY,
+  title VARCHAR(300),
+  description VARCHAR(max),
+  related_info VARCHAR(max),
+  category_id int FOREIGN KEY REFERENCES category(category_id),
+  image_id int FOREIGN KEY REFERENCES base_image(image_id)
+);
+
+CREATE TABLE content_type
+( content_type_id int IDENTITY(1,1) PRIMARY KEY,
+  content_type_description VARCHAR(100)
+);
+
+CREATE TABLE base_content
+( base_content_id int IDENTITY(1,1) PRIMARY KEY,
+  title VARCHAR(300),
+  description VARCHAR(max),
+  content_type_id int FOREIGN KEY REFERENCES content_type(content_type_id),
+  sub_category_id int FOREIGN KEY REFERENCES sub_category(sub_category_id),
+  image_id int FOREIGN KEY REFERENCES base_image(image_id)
+);
+
+CREATE TABLE list_content_topic
+( topic_id int IDENTITY(1,1) PRIMARY KEY,
+  base_content_id int FOREIGN KEY REFERENCES base_content(base_content_id),
+  title VARCHAR(300),
+  description VARCHAR(max),
+  image_id int FOREIGN KEY REFERENCES base_image(image_id)
+);
+
+CREATE TABLE news_content
+( news_content_id int IDENTITY(1,1) PRIMARY KEY,
+  base_content_id int FOREIGN KEY REFERENCES base_content(base_content_id),
+  news_content_text VARCHAR(max)
+);
+
+CREATE TABLE quizz_question
+( question_id int IDENTITY(1,1) PRIMARY KEY,
+  base_content_id int FOREIGN KEY REFERENCES base_content(base_content_id),
+  title VARCHAR(300),
+  description VARCHAR(max),
+  image_id int FOREIGN KEY REFERENCES base_image(image_id)
+);
+
+CREATE TABLE quizz_result
+( result_id int IDENTITY(1,1) PRIMARY KEY,
+  base_content_id int FOREIGN KEY REFERENCES base_content(base_content_id),
+  title VARCHAR(300),
+  description VARCHAR(max),
+  image_id int FOREIGN KEY REFERENCES base_image(image_id)
+);
+
+CREATE TABLE question_option
+( option_id int IDENTITY(1,1) PRIMARY KEY,
+  question_id int FOREIGN KEY REFERENCES quizz_question(question_id),
+  title VARCHAR(,00),
+  description VARCHAR(max),
+  image_id int FOREIGN KEY REFERENCES base_image(image_id),
+  base_content_id int FOREIGN KEY REFERENCES base_content(base_content_id),
+  result_id int FOREIGN KEY REFERENCES quizz_result(result_id),
+);
+
+CREATE TABLE base_user
+( base_user_id int IDENTITY(1,1) PRIMARY KEY,
+  base_user_name VARCHAR(200),
+  base_user_email VARCHAR(max),
+  base_user_password VARCHAR(max),
+  
+);
+
+CREATE TABLE user_permission
+( user_permission_id int IDENTITY(1,1) PRIMARY KEY,
+  user_permission_description VARCHAR(100)
+);
+
+INSERT INTO [dbo].[content_type]
+([content_type_description])VALUES ('News');
+  
+INSERT INTO [dbo].[content_type]
+([content_type_description]) VALUES ('Quizz');
+  
+INSERT INTO [dbo].[content_type]
+([content_type_description]) VALUES ('List');
+  
+INSERT INTO [dbo].[content_type]
+([content_type_description]) VALUES ('Publicity');
+
+INSERT INTO [dbo].user_permission
+(user_permission_description) VALUES ('Administrator');
+
+INSERT INTO [dbo].user_permission
+(user_permission_description) VALUES ('Basic');
